@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon site web</title>
+    <title>Images Libres De Droits</title>
+    
+    <!-- Ajout des styles pour les boutons de navigations-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-+qXNwJOuIevhCz4jOc4L+2ZNBRBu5QSpf4eNmjA8qy4HqA+1nvj/e7ZdR7o8YoiE5vdZyt4QT3fSW6Lep8Qwag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -52,9 +55,43 @@
             border: none;
             cursor: pointer;
         }
+
+        /* Styles des boutons de retour en arrière et de navigation*/
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .navigation-buttons a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px;
+        }
+
+        .navigation-buttons a:hover {
+            background-color: #555;
+        }
     </style>
 </head>
+
 <body>
+
+    <!-- Boutons de retour en arrière et de navigation-->
+
+    <div class="navigation-buttons">
+        <a href="javascrit:history.go(-1)">
+            <i class="fas fa-arrow-left"></i> Retour
+        </a>
+    
+
+    <!-- Boutons d'historique-->
+    <a href="javascript:history.back()">
+        <i class="fas fa-history"></i> Historique
+    </a>
+    </div>
 
     <header>
         <img src="C:\Users\ACS\Documents\GitHub\Dev-Web\HTML\cat-8377169_640.jpg" alt="Image Header">
@@ -104,6 +141,7 @@
     </footer>
 
 </body>
+
 </html>
     
 

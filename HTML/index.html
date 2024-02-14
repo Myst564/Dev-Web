@@ -20,7 +20,12 @@
             color: #fff;
             padding: 10px;
             text-align: center;
-            
+            position: relative;
+        }
+
+        header img {
+            width: 100%; /* Faire en sorte que l'image couvre toute la largeur du header */
+            height: auto; /* Ajuster la hauteur proportionnellement */
         }
 
         nav ul {
@@ -33,6 +38,11 @@
             padding: 20px;
             margin: 20px;
             border: 1px solid #ccc;
+            transition: background-color 0.3s ease; /* Effet de transition pour les sections */
+        }
+
+        section:hover {
+            background-color: #f0f0f0; /* Changement de couleur au survol */
         }
 
         footer {
@@ -42,19 +52,6 @@
             padding: 10px;
             position: relative;
             bottom: 0;
-            width: 100;
-        }
-
-        /* Style du bouton Instagram dans le footer */
-        .instagram-btn {
-            background-image: url('logo insta.webp'); /* Remplacer le visuel du bouton pour insta avec le logo insta */
-            background-size: contain; /* Ajustez la taille si nécessaire*/
-            background-repeat: no-repeat;
-            background-position: center;
-            width: 50px; /* Optimiser la largeur du bouton */
-            height: 50px; /* Optimiser la longueur du bouton*/
-            border: none;
-            cursor: pointer;
         }
 
         /* Styles des boutons de retour en arrière et de navigation*/
@@ -70,10 +67,53 @@
             color: #fff;
             text-decoration: none;
             padding: 5px;
+            transition: background-color 0.3s ease; /* Effet de transition pour les liens de navigation */
         }
 
         .navigation-buttons a:hover {
-            background-color: #555;
+            background-color: #555; /* Changement de couleur au survol */
+        }
+
+        /* Style du bouton Instagram dans le footer */
+        .instagram-btn {
+            background-image: url('logo insta.webp'); /* Remplacer le visuel du bouton pour insta avec le logo insta */
+            background-size: contain; /* Ajustez la taille si nécessaire*/
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 50px; /* Optimiser la largeur du bouton */
+            height: 50px; /* Optimiser la longueur du bouton*/
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Effet de transition pour le bouton Instagram */
+        }
+
+        .instagram-btn:hover {
+            transform: scale(1.2); /* Effet d'échelle au survol */
+        }
+
+        /* Bouton de retour en haut */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            display: none;
+            transition: background-color 0.3s ease; /* Effet de transition pour le bouton de retour en haut */
+        }
+
+        #back-to-top:hover {
+            background-color: #555; /* Changement de couleur au survol */
+        }
+
+        /* Icône Instagram dans le footer */
+        .instagram-icon {
+            color: #fff;
+            font-size: 24px;
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -81,17 +121,14 @@
 <body>
 
     <!-- Boutons de retour en arrière et de navigation-->
-
     <div class="navigation-buttons">
-        <a href="javascrit:history.go(-1)">
+        <a href="javascript:history.go(-1)">
             <i class="fas fa-arrow-left"></i> Retour
         </a>
-    
-
-    <!-- Boutons d'historique-->
-    <a href="javascript:history.back()">
-        <i class="fas fa-history"></i> Historique
-    </a>
+        <!-- Boutons d'historique-->
+        <a href="javascript:history.back()">
+            <i class="fas fa-history"></i> Historique
+        </a>
     </div>
 
     <header>
@@ -108,16 +145,38 @@
 
     <section id="accueil">
         <h2>Accueil</h2>
-        <p>Bienvenue sur mon site web ! Ici, vous retrouvez tout pleins d'images libres de droits et utilisables pour vos nombreux projets ou bien autres ! Amusez vous bien ! (vous pouvez me contacter au moindre problème)</p>
+        <!-- Ajout de la galerie d'images -->
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+            <img src="image1.jpg" alt="Image 1" style="width: 200px; height: auto; margin-bottom: 10px;">
+            <img src="image2.jpg" alt="Image 2" style="width: 200px; height: auto; margin-bottom: 10px;">
+            <img src="image3.jpg" alt="Image 3" style="width: 200px; height: auto; margin-bottom: 10px;">
+        </div>
+        <p>Bienvenue sur mon site web ! Ici, vous retrouvez tout plein d'images libres de droits et utilisables pour vos nombreux projets ou bien d'autres ! Amusez-vous bien ! (vous pouvez me contacter au moindre problème)</p>
     </section>
 
     <section id="services">
         <h2>Nos services</h2>
         <ul>
-            <li><a href="#Services1">Images Libres de droits</a></li>
-            <li><a href="#Services2">Catégorie d'images libres de droits</a></li>
-            <li><a href="#Services3">Ajout d'images Libres de droits</a></li>
+            <li><a href="#services1">Images Libres de droits</a></li>
+            <li><a href="#services2">Catégorie d'images libres de droits</a></li>
+            <li><a href="#services3">Ajout d'images Libres de droits</a></li>
         </ul>
+
+        <!-- Ajout de détails pour chaque service -->
+        <div id="services1">
+            <h3>Images Libres de droits</h3>
+            <p>Explorez notre collection d'images libres de droits pour vos projets créatifs.</p>
+        </div>
+
+        <div id="services2">
+            <h3>Catégorie d'images libres de droits</h3>
+            <p>Découvrez nos catégories d'images, triées pour répondre à vos besoins spécifiques.</p>
+        </div>
+
+        <div id="services3">
+            <h3>Ajout d'images Libres de droits</h3>
+            <p>Contribuez à notre collection en ajoutant vos propres images libres de droits.</p>
+        </div>
     </section>
 
     <section id="contact">
@@ -129,8 +188,11 @@
             <label for="e-mail">Email</label>
             <input type="email" id="email" name="email" required>
 
+            <label for="subject">Sujet</label>
+            <input type="text" id="subject" name="subject" required>
+
             <label for="message">Message</label>
-            <input type="message" id="message" required></textarea>
+            <textarea id="message" name="message" required></textarea>
 
             <input type="submit" value="ENVOYER">
         </form>
@@ -138,12 +200,42 @@
 
     <footer>
         <p>&copy; 2024 Images Libres de Droits. Tout droits réservés.</p>
-        Nous suivre sur instagram: <button class="instagram-btn" onclick="window.location.href='https://www.instagram.com/'"></button>
+        <!-- Utilisation d'icônes pour représenter les réseaux sociaux -->
+        Nous suivre sur Instagram: 
+        <button class="instagram-btn" onclick="window.location.href='https://www.instagram.com/'"></button>
+        <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram instagram*-icon"></i>
+        </a>
     </footer>
 
+    <!-- Bouton de retour en haut -->
+    <button id="back-to-top" onclick="scrollToTop()">Retour en Haut</button>
+
+    <script>
+        // Afficher ou masquer le bouton de retour en haut en fonction du défilement
+        window.onscroll = function() {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            var button = document.getElementById("back-to-top");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                button.style.display = "block";
+            } else {
+                button.style.display = "none";
+            }
+        }
+
+        // Faire défiler jusqu'en haut de la page
+        function scrollToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
 </body>
 
 </html>
+
     
 
 
@@ -174,10 +266,6 @@
 
 
 
-
-
-
-</body>
 
 
 

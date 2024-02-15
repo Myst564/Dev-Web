@@ -135,6 +135,13 @@
         .home-images img:hover {
             transform: scale(1.1); /* Effet d'échelle au survol */
         }
+
+        /* Styles pour la notification*/
+        #notification {
+            margin-top: 10px;
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -224,6 +231,10 @@
             <textarea id="message" name="message" required></textarea>
 
             <input type="submit" value="ENVOYER">
+
+            <!-- Notification -->
+            <div id="notification"></div>
+
         </form>
     </section>
 
@@ -277,9 +288,29 @@
           if (c > 0) {
               window.requestAnimationFrame(scrollToTop);
               window.scrollTo(0,0)
+          }
     }
-}
+        // Fonction pour valider le formulaire et afficher la notification// 
+        function validateForm() {
+            // On peut ajouter ici une logique de validation si nécessaire//
+            // Par exemple, vérifier que les champs sont remplos correctement//
 
+            // Simulation de l'envoi de réussi pour l'exemple//
+            simulateSubmit();
+            return false; // Pour empêcher le formulaire de se soumettre normalement
+        }
+
+        function simulateSubmit() {
+            // Simulation de l'envoie (remplacé par la logique d'envoi réel)
+            var notification = document.getElementById("notification");
+            notification.innerHTML = "Le formulaire a été envoyé avec succès !";
+            notification.style.color = "green";
+
+            // Effacer le contenu après quelques secondes (vous pouvez ajuster le délai)
+            setTimeout(function() {
+                notification.innerHTML = "";
+            }, 5000);
+        }
     </script>
 </body>
 

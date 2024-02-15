@@ -103,7 +103,6 @@
             padding: 10px;
             border: none;
             cursor: pointer;
-            display: none;
             transition: background-color 0.3s ease; /* Effet de transition pour le bouton de retour en haut */
         }
 
@@ -273,14 +272,14 @@
         }
 
         // Fonction pour faire défiler jusqu'en haut de la page en douceur
-function scrollToTop() {
-    const c = document.documentElement.scrollTop || document.body.scrollTop;
+        function scrollToTop() {
+          const c = document.documentElement.scrollTop || document.body.scrollTop;
+          if (c > 0) {
+              window.requestAnimationFrame(scrollToTop);
+              window.scrollTo(0,0)
+    }
 }
 
-    if (c > 0) {
-        window.requestAnimationFrame(scrollToTop);
-        window.scrollTo(null, 0)
-    }
     </script>
 </body>
 

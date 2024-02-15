@@ -171,17 +171,14 @@
         <h2>Accueil</h2>
         <!-- Ajout de la galerie d'images avec des liens vers les images originales -->
         <div class="home-images">
-            <a href="https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/" target="_blank">
-                <img src="image1.jpg" alt="Image 1" onclick="openImage('https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/')">
+            <a href="lien_image1.jpg" target="_blank">
+                <img src="image1.jpg" alt="Image 1" onclick="openImage('lien_image1.jpg')">
             </a>
-            <a href="https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/" target="_blank">
-                <img src="image2.jpg" alt="Image 2" onclick="openImage('https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/')">
+            <a href="lien_image2.jpg" target="_blank">
+                <img src="image2.jpg" alt="Image 2" onclick="openImage('lien_image2.jpg')">
             </a>
-            <a href="https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/" target="_blank">
-                <img src="image3.jpg" alt="Image 3" onclick="openImage('https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/')">            
-            </a>
-            <a href="https://pixabay.com/fr/photos/mousse-nature-fleur-rouge-fleurir-7924522/" target="_blank">
-                <img src="image4.jpg" alt="Image 4" onclick="openImage('https://pixabay.com/fr/photos/mousse-nature-fleur-rouge-fleurir-7924522/')">
+            <a href="lien_image3.jpg" target="_blank">
+                <img src="image3.jpg" alt="Image 3" onclick="openImage('lien_image3.jpg')">
             </a>
         </div>
         <p>Bienvenue sur mon site web ! Ici, vous retrouvez tout plein d'images libres de droits et utilisables pour vos nombreux projets ou bien d'autres ! Amusez-vous bien ! (vous pouvez me contacter au moindre problème)</p>
@@ -274,10 +271,21 @@
         function openImage(imageUrl) {
             window.open(imageUrl, '_blank');
         }
+
+        // Fonction pour faire défiler jusqu'en haut de la page en douceur
+function scrollToTop() {
+    const c = document.documentElement.scrollTop || document.body.scrollTop;
+}
+
+    if (c > 0) {
+        window.requestAnimationFrame(scrollToTop);
+        window.scrollTo(null, 0)
+    }
     </script>
 </body>
 
 </html>
+
 
 
     

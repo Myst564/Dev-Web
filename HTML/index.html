@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Images Libres De Droits</title>
-    
+
     <!-- Ajout des styles pour les boutons de navigations-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-+qXNwJOuIevhCz4jOc4L+2ZNBRBu5QSpf4eNmjA8qy4HqA+1nvj/e7ZdR7o8YoiE5vdZyt4QT3fSW6Lep8Qwag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -129,7 +130,7 @@
             height: auto;
             margin-bottom: 10px;
             cursor: pointer;
-            transition: transform 0.3 ease;
+            transition: transform 0.3s ease; /* Effet de transition pour les images */
         }
 
         .home-images img:hover {
@@ -145,15 +146,14 @@
         <a href="#accueil">
             <i class="fas fa-home"></i> Accueil
         </a>
-          <!-- Boutons d'historique-->
-          <a href="#historique" onclick="showHistory()">
+        <!-- Boutons d'historique-->
+        <a href="#historique" onclick="showHistory()">
             <i class="fas fa-history"></i> Historique
         </a>
         <a href="javascript:history.go(-1)">
             <i class="fas fa-arrow-left"></i> Retour
         </a>
     </div>
-      
 
     <header>
         <img src="C:\Users\ACS\Documents\GitHub\Dev-Web\HTML\cat-8377169_640.jpg" alt="Image Header">
@@ -170,14 +170,23 @@
     <section id="accueil">
         <h2>Accueil</h2>
         <!-- Ajout de la galerie d'images avec des liens vers les images originales -->
-        <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-            <img src="image1.jpg" alt="Image 1" style="width: 200px; height: auto; margin-bottom: 10px;">
-            <img src="image2.jpg" alt="Image 2" style="width: 200px; height: auto; margin-bottom: 10px;">
-            <img src="image3.jpg" alt="Image 3" style="width: 200px; height: auto; margin-bottom: 10px;">
+        <div class="home-images">
+            <a href="https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/" target="_blank">
+                <img src="image1.jpg" alt="Image 1" onclick="openImage('https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/')">
+            </a>
+            <a href="https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/" target="_blank">
+                <img src="image2.jpg" alt="Image 2" onclick="openImage('https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/')">
+            </a>
+            <a href="https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/" target="_blank">
+                <img src="image3.jpg" alt="Image 3" onclick="openImage('https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/')">            
+            </a>
+            <a href="https://pixabay.com/fr/photos/mousse-nature-fleur-rouge-fleurir-7924522/" target="_blank">
+                <img src="image4.jpg" alt="Image 4" onclick="openImage('https://pixabay.com/fr/photos/mousse-nature-fleur-rouge-fleurir-7924522/')">
+            </a>
         </div>
         <p>Bienvenue sur mon site web ! Ici, vous retrouvez tout plein d'images libres de droits et utilisables pour vos nombreux projets ou bien d'autres ! Amusez-vous bien ! (vous pouvez me contacter au moindre problème)</p>
     </section>
-     
+
     <section id="services">
         <h2>Nos services</h2>
         <ul>
@@ -225,7 +234,7 @@
     <footer>
         <p>&copy; 2024 Images Libres de Droits. Tout droits réservés.</p>
         <!-- Utilisation d'icônes pour représenter les réseaux sociaux -->
-        Nous suivre sur Instagram: 
+        Nous suivre sur Instagram:
         <button class="instagram-btn" onclick="window.location.href='https://www.instagram.com/'"></button>
         <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
             <i class="fab fa-instagram instagram-icon"></i>
@@ -260,10 +269,16 @@
         function showHistory() {
             alert("Affichez l'historique ici");
         }
+
+        // Fonction pour ouvrir l'image originale dans un nouvel onglet
+        function openImage(imageUrl) {
+            window.open(imageUrl, '_blank');
+        }
     </script>
 </body>
 
-</html> 
+</html>
+
 
     
 

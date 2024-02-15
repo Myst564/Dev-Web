@@ -1,0 +1,126 @@
+   body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        header {
+            background-color: black;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+        }
+
+        header img {
+            width: 100%; /* Faire en sorte que l'image couvre toute la largeur du header */
+            height: auto; /* Ajuster la hauteur proportionnellement */
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        section {
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            transition: background-color 0.3s ease; /* Effet de transition pour les sections */
+        }
+
+        section:hover {
+            background-color: #f0f0f0; /* Changement de couleur au survol */
+        }
+
+        footer {
+            background-color: #444;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+        }
+
+        /* Styles des boutons de retour en arrière et de navigation*/
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        .navigation-buttons a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px;
+            transition: background-color 0.3s ease; /* Effet de transition pour les liens de navigation */
+        }
+
+        .navigation-buttons a:hover {
+            background-color: #555; /* Changement de couleur au survol */
+        }
+
+        /* Style du bouton Instagram dans le footer */
+        .instagram-btn {
+            background-image: url('logo insta.webp'); /* Remplacer le visuel du bouton pour insta avec le logo insta */
+            background-size: contain; /* Ajustez la taille si nécessaire*/
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 50px; /* Optimiser la largeur du bouton */
+            height: 50px; /* Optimiser la longueur du bouton*/
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease; /* Effet de transition pour le bouton Instagram */
+        }
+
+        .instagram-btn:hover {
+            transform: scale(1.2); /* Effet d'échelle au survol */
+        }
+
+        /* Bouton de retour en haut */
+        #back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            display: none;
+            transition: background-color 0.3s ease; /* Effet de transition pour le bouton de retour en haut */
+        }
+
+        #back-to-top:hover {
+            background-color: #555; /* Changement de couleur au survol */
+        }
+
+        /* Icône Instagram dans le footer */
+        .instagram-icon {
+            color: #fff;
+            font-size: 24px;
+            margin-left: 5px;
+        }
+
+        /* Style pour les images dans la section accueil */
+        .home-images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .home-images img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.3 ease;
+        }
+
+        .home-images img:hover {
+            transform: scale(1.1); /* Effet d'échelle au survol */
+        }

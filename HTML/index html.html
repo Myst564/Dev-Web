@@ -1,4 +1,4 @@
-b<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -158,6 +158,10 @@ b<!DOCTYPE html>
             margin-right: 10px;
         }
 
+        /* Ajout de styles pour les sections principales avec une marge supérieure */
+        .main-content {
+            margin-top: 80px; /* Ajustez la valeur en fonction de votre design */
+        }
     </style>
 </head>
 
@@ -189,7 +193,7 @@ b<!DOCTYPE html>
         </nav>
     </header>
 
-    <section id="accueil">
+    <section id="accueil" class="main-content">
         <h2>Accueil</h2>
         <!-- Ajout des boutons de filtres pour la galerie d'images-->
         <div>
@@ -212,7 +216,7 @@ b<!DOCTYPE html>
         <p>Bienvenue sur mon site web ! Ici, vous retrouvez tout plein d'images libres de droits et utilisables pour vos nombreux projets ou bien d'autres ! Amusez-vous bien ! (vous pouvez me contacter au moindre problème)</p>
     </section>
 
-    <section id="services">
+    <section id="services" class="main-content">
         <h2>Nos services</h2>
         <ul>
             <li><a href="#services1">Images Libres de droits</a></li>
@@ -237,7 +241,7 @@ b<!DOCTYPE html>
         </div>
     </section>
 
-    <section id="contact">
+    <section id="contact" class="main-content">
         <h2>Contact</h2>
         <form action="traitement.php" method="post" onsubmit="return validateForm()">
             <label for="name">Nom :</label>
@@ -253,7 +257,7 @@ b<!DOCTYPE html>
             <textarea id="message" name="message" required></textarea>
 
             <input type="submit" value="ENVOYER">
-            
+
             <!-- Notification -->
             <div id="notification"></div>
         </form>
@@ -281,18 +285,16 @@ b<!DOCTYPE html>
 
         var navbar = document.getElementsByTagName("nav")[0];
 
-
         function fixedNavbar() {
-            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80 ) {
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80) {
                 navbar.classList.add("fixed-nav");
             } else {
                 navbar.classList.remove("fixed-nav");
             }
         }
 
-    
-           // Fonction pour filtrer les images par catégorie
-           function filterImages(category) {
+        // Fonction pour filtrer les images par catégorie
+        function filterImages(category) {
             var images = document.querySelectorAll('.home-images img');
             images.forEach(function(image) {
                 var dataCategory = image.getAttribute('data-category');
@@ -302,25 +304,25 @@ b<!DOCTYPE html>
                     image.style.display = 'none';
                 }
             });
-        } 
-        
-        // Afficher ou masquer le bouton de retour en haut en fonction du défilement 
+        }
+
+        // Afficher ou masquer le bouton de retour en haut en fonction du défilement
         function scrollFunction() {
-            car = button = document.getElementById("back-to-top");
-            if (docuement.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            var button = document.getElementById("back-to-top");
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 button.style.display = "block";
             } else {
                 button.style.display = "none";
             }
         }
 
-        // Faire défiler jusqu'en haut de la page 
-        function scrolltoTop() {
+        // Faire défiler jusqu'en haut de la page
+        function scrollToTop() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
 
-        // Fonction pour afficher l'historique 
+        // Fonction pour afficher l'historique
         function showHistory() {
             alert("Affichez l'istorique ici");
         }
@@ -331,19 +333,19 @@ b<!DOCTYPE html>
         }
 
         // Fonction pour valider le formulaire et afficher la notification
-        function validateForm () {
-            // Simulation de l'envoi réussi pour l'exemple 
+        function validateForm() {
+            // Simulation de l'envoi réussi pour l'exemple
             simulateSubmit();
             return false; // Pour empêcher le formulaire de se soumettre normalement
         }
 
         function simulateSubmit() {
-            // Simulation de l'envoi 
+            // Simulation de l'envoi
             var notification = document.getElementById("notification");
             notification.innerHTML = "Le formulaire a bien été envoyé avec succès ! "
             notification.style.color = "green";
 
-            // Effacer le contenu après quelques secondes 
+            // Effacer le contenu après quelques secondes
             setTimeout(function() {
                 notification.innerHTML = "";
             }, 5000);
@@ -352,3 +354,4 @@ b<!DOCTYPE html>
 </body>
 
 </html>
+

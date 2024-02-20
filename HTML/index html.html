@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+b<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -142,6 +142,22 @@
             color: red;
             font-weight: bold;
         }
+
+        /* Ajout de styles pour la barre de nivigation fixe*/
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        /* Ajout de styles pour les boutons de filtres*/
+        .filter-btn {
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
     </style>
 </head>
 
@@ -175,6 +191,11 @@
 
     <section id="accueil">
         <h2>Accueil</h2>
+        <!-- Ajout des boutons de filtres pour la galerie d'images-->
+        <div>
+            <button class="filter-btn" onclick="filterImages('animaux')">Animaux</button>
+            <button class="filter-btn" onclick="filterImages('nature')">Nature</button>
+        </div>
         <!-- Ajout de la galerie d'images avec des liens vers les images originales -->
         <div class="home-images">
             <a href="https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/" target="_blank">
@@ -187,6 +208,7 @@
                 <img src="image3.jpg" alt="Image 3" onclick="openImage('https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/')">
             </a>
         </div>
+        <!--Ajouter le reste des images avec les catégories appropriées-->
         <p>Bienvenue sur mon site web ! Ici, vous retrouvez tout plein d'images libres de droits et utilisables pour vos nombreux projets ou bien d'autres ! Amusez-vous bien ! (vous pouvez me contacter au moindre problème)</p>
     </section>
 
@@ -253,51 +275,75 @@
     <script>
         // Afficher ou masquer le bouton de retour en haut en fonction du défilement
         window.onscroll = function() {
+            fixedNavbar();
             scrollFunction();
         };
 
+        var navbar = document.getElementsByTagName("nav")[0];
+
+
+        function fixedNavbar() {
+            if (document.body.scrollTop > 80 || document.documentElement.scrollTop > 80 ) {
+                navbar.classList.add("fixed-nav");
+            } else {
+                navbar.classList.remove("fixed-nav");
+            }
+        }
+
+    
+           // Fonction pour filtrer les images par catégorie
+           function filterImages(category) {
+            var images = document.querySelectorAll('.home-images img');
+            images.forEach(function(image) {
+                var dataCategory = image.getAttribute('data-category');
+                if (category === 'all' || dataCategory === category) {
+                    image.style.display = 'block';
+                } else {
+                    image.style.display = 'none';
+                }
+            });
+        } 
+        
+        // Afficher ou masquer le bouton de retour en haut en fonction du défilement 
         function scrollFunction() {
-            var button = document.getElementById("back-to-top");
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            car = button = document.getElementById("back-to-top");
+            if (docuement.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
                 button.style.display = "block";
             } else {
                 button.style.display = "none";
             }
         }
 
-        // Faire défiler jusqu'en haut de la page
-        function scrollToTop() {
+        // Faire défiler jusqu'en haut de la page 
+        function scrolltoTop() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
 
-        // Fonction pour afficher l'historique ( à adapter selon les besoins)
+        // Fonction pour afficher l'historique 
         function showHistory() {
-            alert("Affichez l'historique ici");
+            alert("Affichez l'istorique ici");
         }
 
-        // Fonction pour ouvrir l'image originale dans un nouvel onglet
-        function openImage(imageUrl) {
-            window.open(imageUrl, '_blank');
+        // fonction pour ouvrir l'image originale dans un nouvel onglet
+        function openImage(imageURL) {
+            window.open(imageURL, '_blank');
         }
 
         // Fonction pour valider le formulaire et afficher la notification
-        function validateForm() {
-            // Vous pouvez ajouter ici une logique de validation si nécessaire
-            // Par exemple, vérifier que les champs sont remplis correctement
-
-            // Simulation de l'envoi réussi pour l'exemple
+        function validateForm () {
+            // Simulation de l'envoi réussi pour l'exemple 
             simulateSubmit();
             return false; // Pour empêcher le formulaire de se soumettre normalement
         }
 
         function simulateSubmit() {
-            // Simulation de l'envoi (remplacez ceci par votre logique d'envoi réelle)
+            // Simulation de l'envoi 
             var notification = document.getElementById("notification");
-            notification.innerHTML = "Le formulaire a été envoyé avec succès!";
+            notification.innerHTML = "Le formulaire a bien été envoyé avec succès ! "
             notification.style.color = "green";
 
-            // Effacer le contenu après quelques secondes (vous pouvez ajuster le délai)
+            // Effacer le contenu après quelques secondes 
             setTimeout(function() {
                 notification.innerHTML = "";
             }, 5000);

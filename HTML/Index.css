@@ -125,3 +125,18 @@ body  {
         .home-images img:hover {
             transform: scale(1.1); /* Effet d'échelle au survol */
         }
+
+         /* Styles pour la notification */
+         #notification {
+            margin-top: 10px;
+            color: red;
+            font-weight: bold;
+        }
+
+        /* Ajout de styles pour la barre de nivigation fixe*/
+        .fixed-nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }

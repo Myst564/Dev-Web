@@ -13,6 +13,7 @@ body  {
             padding: 10px;
             text-align: center;
             position: relative;
+            z-index: 1;
         }
 
         header img {
@@ -24,6 +25,19 @@ body  {
             list-style: none;
             padding: 0;
             margin: 0;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: black;
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            z-index: 2;
+        }
+
+        nav ul li {
+            margin: 10px;
         }
 
         section {

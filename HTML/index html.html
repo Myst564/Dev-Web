@@ -158,9 +158,9 @@
             margin-right: 10px;
         }
 
-        /* Ajout de styles pour les sections principales avec une marge supérieure */
+        /* Ajout de styles pour la classe "main-content" */
         .main-content {
-            margin-top: 80px; /* Ajustez la valeur en fonction de votre design */
+            margin-top: 60px; /* Ajustez selon la hauteur de la barre de navigation fixe */
         }
     </style>
 </head>
@@ -199,17 +199,18 @@
         <div>
             <button class="filter-btn" onclick="filterImages('animaux')">Animaux</button>
             <button class="filter-btn" onclick="filterImages('nature')">Nature</button>
+            <button class="filter-btn" onclick="filterImages('all')">Tous</button> <!-- Ajout du bouton "Tous" -->
         </div>
         <!-- Ajout de la galerie d'images avec des liens vers les images originales -->
         <div class="home-images">
             <a href="https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/" target="_blank">
-                <img src="image1.jpg" alt="Image 1" onclick="openImage('https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/')">
+                <img src="image1.jpg" alt="Image 1" data-category="animaux" onclick="openImage('https://pixabay.com/fr/photos/perroquet-royal-australien-perroquet-7954026/')">
             </a>
             <a href="https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/" target="_blank">
-                <img src="image2.jpg" alt="Image 2" onclick="openImage('https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/')">
+                <img src="image2.jpg" alt="Image 2" data-category="nature" onclick="openImage('https://pixabay.com/fr/photos/%C3%A9cureuil-rongeur-tamia-arbre-8473819/')">
             </a>
             <a href="https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/" target="_blank">
-                <img src="image3.jpg" alt="Image 3" onclick="openImage('https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/')">
+                <img src="image3.jpg" alt="Image 3" data-category="nature" onclick="openImage('https://pixabay.com/fr/photos/papillon-satyre-papillon-fleurs-8521807/')">
             </a>
         </div>
         <!--Ajouter le reste des images avec les catégories appropriées-->
@@ -263,7 +264,7 @@
         </form>
     </section>
 
-    <footer>
+    <footer class="main-content">
         <p>&copy; 2024 Images Libres de Droits. Tout droits réservés.</p>
         <!-- Utilisation d'icônes pour représenter les réseaux sociaux -->
         Nous suivre sur Instagram:
@@ -306,7 +307,7 @@
             });
         }
 
-        // Afficher ou masquer le bouton de retour en haut en fonction du défilement
+        // Afficher ou masquer le bouton de retour en haut en fonction du défilement 
         function scrollFunction() {
             var button = document.getElementById("back-to-top");
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
@@ -316,13 +317,13 @@
             }
         }
 
-        // Faire défiler jusqu'en haut de la page
+        // Faire défiler jusqu'en haut de la page 
         function scrollToTop() {
             document.body.scrollTop = 0;
             document.documentElement.scrollTop = 0;
         }
 
-        // Fonction pour afficher l'historique
+        // Fonction pour afficher l'historique 
         function showHistory() {
             alert("Affichez l'istorique ici");
         }
@@ -334,18 +335,18 @@
 
         // Fonction pour valider le formulaire et afficher la notification
         function validateForm() {
-            // Simulation de l'envoi réussi pour l'exemple
+            // Simulation de l'envoi réussi pour l'exemple 
             simulateSubmit();
             return false; // Pour empêcher le formulaire de se soumettre normalement
         }
 
         function simulateSubmit() {
-            // Simulation de l'envoi
+            // Simulation de l'envoi 
             var notification = document.getElementById("notification");
             notification.innerHTML = "Le formulaire a bien été envoyé avec succès ! "
             notification.style.color = "green";
 
-            // Effacer le contenu après quelques secondes
+            // Effacer le contenu après quelques secondes 
             setTimeout(function() {
                 notification.innerHTML = "";
             }, 5000);
@@ -354,4 +355,5 @@
 </body>
 
 </html>
+
 

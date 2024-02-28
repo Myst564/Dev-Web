@@ -1,0 +1,29 @@
+/*  Mobile */ 
+@media (max-width: 480px) {
+
+}
+
+/* Ajouts pour la responsivité */
+/* Styles pour les petits écrans ( mobiles) */
+@media (max-width: 767px) {
+    .block-flex {
+        flex-direction: column;
+    }
+
+    .btn {
+      padding: 1rem;
+      font-size: 18px;
+    }
+
+    
+}
+
+/* Styles pour les tablettes et petits écrans */
+@media (min-width: 768px) and (max-width: 1199px) {
+    /* Ajoutez des styles spécifiques pour les tablettes et petits écrans ici */
+  }
+
+  /*Styles pour les écrans larges (desktops) */
+  @media (min-width: 1200px) {
+
+  }

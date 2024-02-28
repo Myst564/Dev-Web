@@ -27,11 +27,11 @@ h1,h2,h3,h4,p{
 
 /* Gestion des li */
 li{list-style: none; font-size: 30px; padding: 1rem;} 
-li:hover{
+ nav ul li:hover{
     background-color: #03a874;
     cursor: pointer;
 }
-li:active{
+nav ul li:active{
     background-color: #04be84;
 }
 nav ul{
@@ -109,25 +109,25 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 /*-----------------------------------------------*/
 
 /*Gestion des tailles d'élements h = heigt */
-.h-1{height: 1.4rem;}
-.h-2{height: 2.8rem;}
-.h-3{height: 4.2rem;}
-.h-4{height: 5.6rem;}
-.h-5{height: 7rem;}
-.h-6{height: 8.4rem;}
-.h-10{height: 14rem;}
-.h-15{height: 21rem;}
-.h-20{height: 28rem;}
-.h-25{height: 35rem;}
-.h-30{height: 42rem;}
-.h-35{height: 49rem;}
-.h-40{height: 56rem;}
-.h-50{height: 70rem;}
-.h-60{height: 84rem;}
-.h-70{height: 98rem;}
-.h-80{height: 112rem;}
-.h-90{height: 126rem;}
-.h-100{height: 140rem;}
+.h-1rem{height: 1.4rem;}
+.h-2rem{height: 2.8rem;}
+.h-3rem{height: 4.2rem;}
+.h-4rem{height: 5.6rem;}
+.h-5rem{height: 7rem;}
+.h-6rem{height: 8.4rem;}
+.h-10rem{height: 14rem;}
+.h-15rem{height: 21rem;}
+.h-20rem{height: 28rem;}
+.h-25rem{height: 35rem;}
+.h-30rem{height: 42rem;}
+.h-35rem{height: 49rem;}
+.h-40rem{height: 56rem;}
+.h-50rem{height: 70rem;}
+.h-60rem{height: 84rem;}
+.h-70rem{height: 98rem;}
+.h-80rem{height: 112rem;}
+.h-90rem{height: 126rem;}
+.h-100rem{height: 140rem;}
 /*-----------------------------------------------*/
 /*Gestion largeurs d'élements w = width en % */
 .w-10{width: 10%;}
@@ -210,7 +210,7 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 
 /*---------------------------------------------------------------------*/
 
-/*Marge interne*/
+/*padding  */
 
 .p-1rem{padding: 1rem;}
 .p-2rem{padding: 2rem;}
@@ -226,7 +226,7 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 /*------------------------------------------------------------------------*/
 
 
-/*Marge interne*/
+/*padding top */
 
 .pt-1rem{padding-top: 1rem;}
 .pt-2rem{padding-top: 2rem;}
@@ -242,7 +242,7 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 /*------------------------------------------------------------------------*/
 
 
-/*Marge externe*/
+/*Marge*/
 
 .m-1rem{margin: 1rem;}
 .m-2rem{margin: 2rem;}

@@ -7,18 +7,19 @@
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link
       href="https://fonts.bunny.net/css?family=akshar:300,400,500,600,700"
-      rel="stylesheet"
-    />
+      rel="stylesheet"/>
+      <link rel="stylesheet" href="carousel.css">
+      <script src="carousel.js" defer></script>
     <title>Association A fleur de peau</title>
   </head>
   <body>
     <div class="block-flex bg-bleu">
-      <div class="w-15rem h-20 img_fit" style="background-image: url('IMG/logo.png');">
+      <div class="w-15rem h-20rem img_fit" style="background-image: url('IMG/logo.png');">
       </div>
       <h1 class="texte-jaune marge-auto">A fleur de peau</h1>
     </div>
 
-    <nav class="block-flex h-5 bg-vert3">
+    <nav class="block-flex h-5rem bg-vert3">
       <ul class="block-flex">
         <li class="block bg-vert3 texte-blanc">Missions</li>
         <li class="block bg-vert3 texte-blanc">Actualités</li>
@@ -28,11 +29,44 @@
         </li>
       </ul>
     </nav>
+    <!--Carousel basic -->
+    <div class="block-flex w-100 h-35rem">
+      
+      <section class="w-100" aria-lebel="photos">
+        <div class="carousel h-35rem" data-carousel>
+          <button class="carousel-button prev" data-carousel-button="prev">
+            &#10096;
+          </button>
+          <button class="carousel-button next" data-carousel-button="next">
+            &#10097;
+          </button>
+          <ul data-slides>
+            <li class="slide w-100 h-35rem" data-active>
+              <div class="w-100 h-35rem img_fit"  style="background-image: url('IMG/Hero/img4.jpg');">
+                <h2 class="t texte-jaune  texte-centre pt-30rem">Mon texte en h3</h2>
+                <h4 class="texte-blanc texte-ep5 texte-centre">mon paragraphe</h4>
+                <p class="texte-blanc texte-ep1 texte-centre">mon paragraphe 2</p>
+              </div>
+            </li>
+
+            <li class="slide">
+              <div class="w-100 h-35rem img_fit"  style="background-image: url('IMG/Hero/img1.jpg');">
+                <h2 class="texte-jaune texte-centre  pt-30rem">Mon texte en h3</h2>
+                <h4 class="texte-blanc texte-ep5  texte-centre">mon paragraphe</h4>
+                <p class="texte-blanc texte-ep1 texte-centre">mon paragraphe 2</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+
+
+    </div>
     <!-- Mot du Président-->
-    <div class="block-flex bg-gris1 h-40 p-2rem">
-      <div class="h-30 w-40 marge-auto img_fit" style="background-image: url('IMG/pics_placeholder/oldman.jpg');">
-      </div>
-      <div class="h-25 w-75 marge-auto p-2rem">
+    <div class="block-flex bg-gris1 h-40rem p-2rem">
+      <div class="h-30rem w-40 marge-auto img_fit" style ="background-image:url('IMG/pics_placeholder/oldman.jpg');"></div>
+      <div class="h-25rem w-75 marge-auto p-2rem">
         <h1 class="texte-vert">Lorem Rpz</h1>
         <h3>lorem no scoop</h3>
         <p class="texte-justif">
@@ -52,17 +86,17 @@
     </div>
     <!--Missions-->
     <div class="block-flex m-3rem">
-      <h1 class="h-6 bg-vert3 texte-blanc texte-centre w-25 marge-auto">
+      <h1 class="h-6rem bg-vert3 texte-blanc texte-centre w-25 marge-auto">
         MISSIONS
       </h1>
     </div>
-    <div class="block-flex bg-gris1 h-50">
-      <div class="w-30 marge-auto h-30">
-        <div class="w-100 bg-vert3 h-5">
+    <div class="block-flex bg-gris1 h-50rem">
+      <div class="w-30 marge-auto h-30rem">
+        <div class="w-100 bg-vert3 h-5rem">
           <h4 class="texte-blanc texte-centre p-1rem">Bonjour</h4>
         </div>
-        <div class="w-100 bg-gris1 h-25">
-          <div class="h-20 img_fit" style="background-image: url('IMG/Juin_jaune/01.jpg');">
+        <div class="w-100 bg-gris1 h-25rem">
+          <div class="h-20rem img_fit" style="background-image: url('IMG/Juin_jaune/01.jpg');">
           </div>
           <p class="p-2rem">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
@@ -72,12 +106,12 @@
           </p>
         </div>
       </div>
-      <div class="w-30 marge-auto h-30">
-        <div class="w-100 bg-vert2 h-5">
+      <div class="w-30 marge-auto h-30rem">
+        <div class="w-100 bg-vert2 h-5rem">
           <h4 class="texte-blanc texte-centre">Bonjour!</h4>
         </div>
-        <div class="w-100 bg-gris1 h-25 img_fit";>
-          <div class="h-20 img_fit" style="background-image: url('IMG/Juin_jaune/02.jpg')";>
+        <div class="w-100 bg-gris1 h-25rem img_fit";>
+          <div class="h-20rem img_fit" style="background-image: url('IMG/Juin_jaune/02.jpg')";>
           </div>
           <p class="p-2rem">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
@@ -87,12 +121,12 @@
           </p>
         </div>
       </div>
-      <div class="w-30 marge-auto h-30">
-        <div class="w-100 bg-vert1 h-5">
+      <div class="w-30 marge-auto h-30rem">
+        <div class="w-100 bg-vert1 h-5rem">
           <h4 class="texte-blanc texte-centre">Bonjour</h4>
         </div>
-        <div class="w-100 bg-gris1 h-20">
-          <div class="h-20 img_fit" style="background-image: url('IMG/Juin_jaune/03.jpg');">
+        <div class="w-100 bg-gris1 h-20rem">
+          <div class="h-20rem img_fit" style="background-image: url('IMG/Juin_jaune/03.jpg');">
           </div>
           <p class="p-2rem">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
@@ -104,16 +138,16 @@
       </div>
     </div>
     <!-- Actualités-->
-    <div class="block h-6 m-3rem">
-      <h1 class="h-6 bg-vert3 texte-blanc texte-centre w-25 marge-auto">
+    <div class="block h-6rem m-3rem">
+      <h1 class="h-6rem bg-vert3 texte-blanc texte-centre w-25 marge-auto">
         Actualités
       </h1>
     </div>
-    <div class="block-flex bg-gris1 h-50">
-      <div class="w-30 marge-auto h-30">
-        <div class="w-100 bg-gris2 h-25 img_fit" style="background-image: url('IMG/Juin_jaune/Juin-Jaune-HVL-Tracteur-rose-2022-scaled.jpg');">
+    <div class="block-flex bg-gris1 h-50rem">
+      <div class="w-30 marge-auto h-30rem">
+        <div class="w-100 bg-gris2 h-25rem img_fit" style="background-image: url('IMG/Juin_jaune/Juin-Jaune-HVL-Tracteur-rose-2022-scaled.jpg');">
         </div>
-        <div class="w-100 bg-gris1 h-5">
+        <div class="w-100 bg-gris1 h-5rem">
           <h4 class="texte-centre p-1rem">Lorem ipsum dolor sit amet</h4>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
@@ -123,10 +157,10 @@
           </p>
         </div>
       </div>
-      <div class="w-30 marge-auto h-30">
-        <div class="w-100 bg-gris2 h-25 img_fit" style="background-image: url('IMG/Juin_jaune/img3.jpg');">
+      <div class="w-30 marge-auto h-30rem">
+        <div class="w-100 bg-gris2 h-25rem img_fit" style="background-image: url('IMG/Juin_jaune/img3.jpg');">
         </div>
-        <div class="w-100 bg-gris1 h-5">
+        <div class="w-100 bg-gris1 h-5rem">
           <h4 class="texte-centre p-1rem">Lorem ipsum dolor sit amet</h4>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
@@ -136,10 +170,10 @@
           </p>
         </div>
       </div>
-      <div class="w-30 marge-auto h-30">
-        <div class="w-100 bg-gris2 h-25 img_fit" style="background-image: url('IMG/Juin_jaune/Juin-jaune-a-la-montagne-DV-2023.jpg');">
+      <div class="w-30 marge-auto h-30rem">
+        <div class="w-100 bg-gris2 h-25rem img_fit" style="background-image: url('IMG/Juin_jaune/Juin-jaune-a-la-montagne-DV-2023.jpg');">
         </div>
-        <div class="w-100 bg-gris1 h-5">
+        <div class="w-100 bg-gris1 h-5rem">
           <h4 class="texte-centre p-1rem">Lorem ipsum dolor sit amet</h4>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus
@@ -155,17 +189,17 @@
       <button class="w-15 bg-vert1 texte-blanc btn block-flex">Get to know more</button>
     </div>
     <!-- Notre Histoire-->
-    <div class="block bg-vert3 h-60" id="apropos">
+    <div class="block bg-vert3 h-60rem" id="apropos">
       <div class="w-100">
         <h1 class="texte-blanc texte-centre p-2rem">Notre Histoire</h1>
       </div>
-      <div class="block-flex w-90 h-40 marge-auto">
-        <div class="w-50 h-40 img_fit" style="background-image: url('IMG/Hero/img2.jpg');">
+      <div class="block-flex w-90 h-40rem marge-auto">
+        <div class="w-50 h-40rem img_fit" style="background-image: url('IMG/Hero/img2.jpg');">
         </div>
         <div class="w-40 marge-auto">
           <h3 class="texte-blanc">Lorem ipsum dolor sit</h3>
           <h4 class="texte-blanc pt-2rem">Lorem ipsum dolor sit</h4>
-          <div class="h-5"></div>
+          <div class="h-5rem"></div>
           <p class="texte-blanc">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis
             cum quae blanditiis perspiciatis modi, enim, impedit nostrum
@@ -191,14 +225,14 @@
       </div>
     </div>
     <!-- Notre équipe-->
-    <div class="block h-80 bg-gris1 p-3rem">
+    <div class="block h-80rem bg-gris1 p-3rem">
       <h1 class="texte-vert texte-centre">Notre équipe</h1>
-      <div class="block w-100 h-50">
+      <div class="block w-100 h-50rem">
         <!-- équpier / description-->
-        <div class="block-flex h-25">
-          <div class="w-25 h-20 img_fit" style="background-image: url('IMG/pics_placeholder/c1.jpg');">
+        <div class="block-flex h-25rem">
+          <div class="w-25 h-20rem img_fit" style="background-image: url('IMG/pics_placeholder/c1.jpg');">
           </div>
-          <div class="w-70 h-20 marge-auto">
+          <div class="w-70 h-20rem marge-auto">
             <h3 class="texte-vert texte-gauche">Trésorier</h3>
             <p>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore,
@@ -210,8 +244,8 @@
             </p>
           </div>
         </div>
-        <div class="block-flex h-20">
-          <div class="w-70 h-20 marge-auto">
+        <div class="block-flex h-20rem">
+          <div class="w-70 h-20rem marge-auto">
             <h3 class="texte-vert texte-droite">Vice Président</h3>
             <p>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore,
@@ -222,16 +256,16 @@
               veritatis nostrum, mollitia saepe! Voluptates, cumque?
             </p>
           </div>
-          <div class="w-25 h-20 img_fit" style="background-image: url('IMG/pics_placeholder/c2.jpg');">
+          <div class="w-25 h-20rem img_fit h-" style="background-image: url('IMG/pics_placeholder/c2.jpg');">
             </div>
           </div>
         </div>
-        <div class="block-flex h-25">
-          <div class="w-25 h-20">
-            <div class="h-20 marge-auto img_fit" style="background-image: url('IMG/pics_placeholder/c3.png');">
+        <div class="block-flex h-25rem">
+          <div class="w-25 h-20rem">
+            <div class="h-20rem marge-auto img_fit" style="background-image: url('IMG/pics_placeholder/c3.png');">
             </div>
           </div>
-          <div class="w-70 h-20 marge-auto">
+          <div class="w-70 h-20rem marge-auto">
             <h3 class="texte-vert texte-gauche">Secrétaire</h3>
             <p>
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore,
@@ -245,50 +279,50 @@
         </div>
       </div>
     </div>
-    <div class="h-5"></div>
+    <div class="h-5rem"></div>
     <!--Galererie-->
-    <div class="block w-100 h-50 bg-gris2">
-      <div class="block-flex h-50 w-100">
-        <div class="block h-40 w-30 marge-auto">
-          <div class="h-35 img_fit" style="background-image: url('IMG/Hero/img1.jpg');">
+    <div class="block w-100 h-50rem bg-gris2">
+      <div class="block-flex h-50rem w-100">
+        <div class="block h-40rem w-30 marge-auto">
+          <div class="h-35rem img_fit" style="background-image: url('IMG/Hero/img1.jpg');">
           </div>
-          <div class="h-10">
+          <div class="h-10rem">
             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic</p>
           </div>
         </div>
-        <div class="block h-40 w-30 marge-auto">
-          <div class="h-35 img_fit" style="background-image: url('IMG/Hero/img3.jpg');">
+        <div class="block h-40rem w-30 marge-auto">
+          <div class="h-35rem img_fit" style="background-image: url('IMG/Hero/img3.jpg');">
           </div>
-          <div class="h-10">
+          <div class="h-10rem">
             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic</p>
           </div>
         </div>
-        <div class="block h-40 w-30 marge-auto">
-          <div class="h-35 img_fit" style="background-image: url('IMG/Hero/img4.jpg');">
+        <div class="block h-40rem w-30 marge-auto">
+          <div class="h-35rem img_fit" style="background-image: url('IMG/Hero/img4.jpg');">
           </div>
-          <div class="h-10 bg-gris2">
+          <div class="h-10rem bg-gris2">
             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Hic</p>
           </div>
         </div>
       </div>
     </div>
     <!-- Formulaire-->
-    <div class="block h-60 bg-vert3">
+    <div class="block h-60rem bg-vert3">
       <div><h1 class="texte-blanc texte-centre p-2rem">Formulaire de contact</h1></div>
-      <form class="block-flex h-50">
+      <form class="block-flex h-50rem">
         <div class="w-50 marge-auto">
           <label class="texte-blanc">
             <div>Nom:</div>
-            <input class="h-2 w-60" type="text" />
+            <input class="h-2rem w-60" type="text" />
           </label>
 
           <label class="texte-blanc">
             <div class="pt-2rem">Prénom:</div>
-            <input class="h-2 w-60" type="text" />
+            <input class="h-2rem w-60" type="text" />
           </label>
           <label class="texte-blanc">
             <div class="pt-2rem">Email:</div>
-            <input class="h-2 w-60" type="text" />
+            <input class="h-2rem w-60" type="text" />
           </label>
           <label class="texte-blanc">
             <div class="pt-2rem">Message:</div>
@@ -297,11 +331,11 @@
               id=""
               cols="30"
               rows="10"
-              class="w-100 h-20"
+              class="w-100 h-20rem"
             ></textarea>
           </label>
-          <div class="h-2"></div>
-          <div class="h-5">
+          <div class="h-2rem"></div>
+          <div class="h-5rem">
             <input
               type="submit"
               value="Send"
@@ -310,14 +344,14 @@
           </div>
         </div>
         <div class="w-40 marge-auto">
-          <div class="h-5"></div>
-          <div class="h-30 w-100 marge-auto img_fit" style="background-image: url('IMG/maps.PNG');">
+          <div class="h-5rem"></div>
+          <div class="h-30rem w-100 marge-auto img_fit" style="background-image: url('IMG/maps.PNG');">
           </div>
         </div>
       </form>
     </div>
     <!-- Footer -->
-    <footer class="block-flex h-20 bg-bleu">
+    <footer class="block-flex h-20rem bg-bleu">
       <div class="w-30">
         <ul>
           <li><a class="texte-jaune" href="#nosmissions">Nos missions</a></li>

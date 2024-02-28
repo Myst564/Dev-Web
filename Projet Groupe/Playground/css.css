@@ -114,6 +114,7 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 .h-3{height: 4.2rem;}
 .h-4{height: 5.6rem;}
 .h-5{height: 7rem;}
+.h-6{height: 8.4rem;}
 .h-10{height: 14rem;}
 .h-15{height: 21rem;}
 .h-20{height: 28rem;}
@@ -208,3 +209,50 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 }
 
 /*---------------------------------------------------------------------*/
+
+/*Marge interne*/
+
+.p-1rem{padding: 1rem;}
+.p-2rem{padding: 2rem;}
+.p-3rem{padding: 3rem;}
+.p-4rem{padding: 4rem;}
+.p-5rem{padding: 5rem;}
+.p-10rem{padding: 10rem;}
+.p-20rem{padding: 20rem;}
+.p-30rem{padding: 30rem;}
+.p-40rem{padding: 40rem;}
+.p-50rem{padding: 50rem;}
+
+/*------------------------------------------------------------------------*/
+
+
+/*Marge interne*/
+
+.pt-1rem{padding-top: 1rem;}
+.pt-2rem{padding-top: 2rem;}
+.pt-3rem{padding-top: 3rem;}
+.pt-4rem{padding-top: 4rem;}
+.pt-5rem{padding-top: 5rem;}
+.pt-10rem{padding-top: 10rem;}
+.pt-20rem{padding-top: 20rem;}
+.pt-30rem{padding-top: 30rem;}
+.pt-40rem{padding-top: 40rem;}
+.pt-50rem{padding-top: 50rem;}
+
+/*------------------------------------------------------------------------*/
+
+
+/*Marge externe*/
+
+.m-1rem{margin: 1rem;}
+.m-2rem{margin: 2rem;}
+.m-3rem{margin: 3rem;}
+.m-4rem{margin: 4rem;}
+.m-5rem{margin: 5rem;}
+.m-10rem{margin: 10rem;}
+.m-20rem{margin: 20rem;}
+.m-30rem{margin: 30rem;}
+.m-40rem{margin: 40rem;}
+.m-50rem{margin: 50rem;}
+
+/*--------------------------------------------------------------------------*/

@@ -255,4 +255,12 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 .m-40rem{margin: 40rem;}
 .m-50rem{margin: 50rem;}
 
+/*  Mobile */ 
+@media only screen and (max-width: 480px) {
+   body {
+    background-color: black;
+
+   }
+}
+
 /*--------------------------------------------------------------------------*/

@@ -59,6 +59,11 @@
     background-color: #03a874;
     cursor: pointer;
   }
+
+  .bg-cta:hover {
+    background-color: #542C59;
+    cursor: pointer;
+  }
   
   nav ul li:active {
     background-color: #04be84;
@@ -103,22 +108,31 @@
   
   /* Couleur fond bg = Background */
   .bg-bleu {
-    background-color: #156fcc;
+    background-color: #05335B;
   }
   .bg-vert1 {
-    background-color: #5dbb02;
+    background-color: #CFC318;
   }
   .bg-vert2 {
     background-color: #0ba939;
   }
   .bg-vert3 {
-    background-color: #009565;
+    background-color: #026641;
   }
   .bg-gris1 {
     background-color: #f7f7f7;
   }
   .bg-gris2 {
     background-color: #e4e9e7;
+  }
+
+  .bg-cta {
+    background-color: #9C51A6;
+    padding: 2rem;
+    font-size: 25px;
+    font-weight: 600;
+    border-radius: 2%;
+    margin: auto;
   }
   
   /*-----------------------------------------------*/
@@ -354,7 +368,7 @@
     border-radius: 2%;
     margin: auto;
   }
-  
+
   .btn:hover {
     background-color: #89cc46;
     cursor: pointer;
@@ -368,6 +382,8 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    background-color: black;
+    background-image: opacity;
   }
   
   /*---------------------------------------------------------------------*/
@@ -536,4 +552,9 @@
     height: 100%;
     object-fit: cover;
   }
-  
+
+.bottom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

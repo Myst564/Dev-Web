@@ -256,12 +256,12 @@ p{font-size: 25px; font-weight: 200;} label{font-size: 25px;;}
 .m-50rem{margin: 50rem;}
 
 /*  Mobile */ 
-@media only screen and (max-width: 480px) {
-   body {
-    background-color: black;
-
-   }
-}
+@media only screen and (max-width: 480px) {}
+@media only screen and (min-width: 481px) and (max-width: 767px) {}
+@media only screen and (min-width: 481px) and (max-width: 991px) {}
+@media only screen and (min-width: 481px) and (max-width: 1199px) {}
+@media only screen and (min-width: 481px) and (max-width: 1919px) {}
+@media only screen and (min-width: 1920px) {}
 
 /*--------------------------------------------------------------------------*/
 

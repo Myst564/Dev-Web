@@ -17,17 +17,22 @@
     <title>Animation Stylée</title>
 </head>
 <body>
+    <!-- Canvas pour le rendu graphique -->
     <canvas id="canvas"></canvas>
 
     <script>
+        // Obtention du contexte 2D du canvas
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
 
+        // Ajustement de la taille du canvas en fonction de la fenêtre du navigateur
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Tableau pour stocker les formes géométriques
         const shapes = [];
 
+        // Classe représentant une forme géométrique
         class Shape {
             constructor(x, y, radius, color, speedX, speedY) {
                 this.x = x;
@@ -38,6 +43,7 @@
                 this.speedY = speedY;
             }
 
+            // Méthode pour dessiner la forme sur le canvas
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -46,22 +52,27 @@
                 ctx.closePath();
             }
 
+            // Méthode pour mettre à jour la position de la forme et gérer les rebonds
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
 
+                // Rebonds sur les bords horizontaux
                 if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
                     this.speedX = -this.speedX;
                 }
 
+                // Rebonds sur les bords verticaux
                 if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
                     this.speedY = -this.speedY;
                 }
 
+                // Dessin de la forme mise à jour
                 this.draw();
             }
         }
 
+        // Fonction pour créer un certain nombre de formes avec des paramètres aléatoires
         function createShapes(numShapes) {
             for (let i = 0; i < numShapes; i++) {
                 const radius = Math.random() * 30 + 10;
@@ -75,27 +86,33 @@
             }
         }
 
+        // Fonction d'animation pour mettre à jour et dessiner les formes en continu
         function animate() {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+            // Mise à jour et dessin de chaque forme
             for (const shape of shapes) {
                 shape.update();
             }
         }
 
+        // Redimensionnement du canvas lorsque la fenêtre du navigateur est redimensionnée
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
-            shapes.length = 0; // Clear the shapes array
-            createShapes(10); // Recreate shapes with updated canvas size
+            // Réinitialisation du tableau de formes et recréation avec la nouvelle taille du canvas
+            shapes.length = 0;
+            createShapes(10);
         });
 
+        // Création initiale de formes et lancement de l'animation
         createShapes(10);
         animate();
     </script>
 </body>
 </html>
+
 
 

@@ -8,31 +8,29 @@
             margin: 0;
             overflow: hidden;
             background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
         }
 
         canvas {
             display: block;
         }
     </style>
-    <title>Animation Stylée</title>
+    <title>Animation avec collisions</title>
 </head>
 <body>
     <!-- Canvas pour le rendu graphique -->
     <canvas id="canvas"></canvas>
 
     <script>
-        // Obtention du contexte 2D du canvas
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-
-        // Ajustement de la taille du canvas en fonction de la fenêtre du navigateur
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        let collisionCount = 0; // Compteur de collisions
 
-        // Tableau pour stocker les formes géométriques
         const shapes = [];
 
-        // Classe représentant une forme géométrique
         class Shape {
             constructor(x, y, radius, color, speedX, speedY) {
                 this.x = x;
@@ -43,7 +41,6 @@
                 this.speedY = speedY;
             }
 
-            // Méthode pour dessiner la forme sur le canvas
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -52,27 +49,53 @@
                 ctx.closePath();
             }
 
-            // Méthode pour mettre à jour la position de la forme et gérer les rebonds
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
 
-                // Rebonds sur les bords horizontaux
+                // Gestion des collisions avec les bords
                 if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
                     this.speedX = -this.speedX;
+                    this.changeColor();
                 }
 
-                // Rebonds sur les bords verticaux
                 if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
                     this.speedY = -this.speedY;
+                    this.changeColor();
                 }
 
-                // Dessin de la forme mise à jour
+                // Gestion des collisions entre les cercles
+                for (const shape of shapes) {
+                    if (shape !== this) {
+                        const distance = Math.sqrt((this.x - shape.x) ** 2 + (this.y - shape.y) ** 2);
+
+                        if (distance < this.radius + shape.radius) {
+                            // Collision détectée, inversion des vitesses
+                            const tempSpeedX = this.speedX;
+                            const tempSpeedY = this.speedY;
+
+                            this.speedX = shape.speedX;
+                            this.speedY = shape.speedY;
+
+                            shape.speedX = tempSpeedX;
+                            shape.speedY = tempSpeedY;
+
+                            this.changeColor();
+                            shape.changeColor();
+                            collisionCount++;
+                        }
+                    }
+                }
+
                 this.draw();
+            }
+
+            changeColor() {
+                // Changer la couleur du cercle après une collision
+                this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
             }
         }
 
-        // Fonction pour créer un certain nombre de formes avec des paramètres aléatoires
         function createShapes(numShapes) {
             for (let i = 0; i < numShapes; i++) {
                 const radius = Math.random() * 30 + 10;
@@ -86,33 +109,49 @@
             }
         }
 
-        // Fonction d'animation pour mettre à jour et dessiner les formes en continu
         function animate() {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Mise à jour et dessin de chaque forme
             for (const shape of shapes) {
                 shape.update();
             }
+
+            // Affichage en temps réel du nombre de cercles de chaque couleur et du nombre de collisions
+            const colorCount = {};
+            for (const shape of shapes) {
+                if (!colorCount[shape.color]) {
+                    colorCount[shape.color] = 1;
+                } else {
+                    colorCount[shape.color]++;
+                }
+            }
+
+            const stats = document.getElementById('stats');
+            stats.innerHTML = `Collisions: ${collisionCount}<br>`;
+
+            for (const color in colorCount) {
+                stats.innerHTML += `${color}: ${colorCount[color]}<br>`;
+            }
         }
 
-        // Redimensionnement du canvas lorsque la fenêtre du navigateur est redimensionnée
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
-            // Réinitialisation du tableau de formes et recréation avec la nouvelle taille du canvas
             shapes.length = 0;
             createShapes(10);
         });
 
-        // Création initiale de formes et lancement de l'animation
         createShapes(10);
         animate();
     </script>
+
+    <!-- Zone d'affichage des statistiques en temps réel -->
+    <div id="stats" style="position: fixed; top: 10px; right: 10px;"></div>
 </body>
 </html>
+
 
 
 

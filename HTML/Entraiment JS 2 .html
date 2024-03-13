@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+    <title>Animation avec collisions</title>
+</head>
+<body>
+    <!-- Canvas pour le rendu graphique -->
+    <canvas id="canvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let collisionCount = 0; // Compteur de collisions entre cercles
+        let wallCollisionCount = 0; // Compteur de collisions avec les bords
+
+        const shapes = [];
+
+        class Shape {
+            constructor(x, y, radius, color, speedX, speedY) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.speedX = speedX;
+                this.speedY = speedY;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+
+                // Affichage du nom de la couleur dans le cercle
+                ctx.fillStyle = "white";
+                ctx.font = "10px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(this.getColorName(), this.x, this.y);
+
+                ctx.closePath();
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Gestion des collisions avec les bords
+                if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
+                    this.speedX = -this.speedX;
+                    this.changeColor();
+                    wallCollisionCount++;
+                }
+
+                if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
+                    this.speedY = -this.speedY;
+                    this.changeColor();
+                    wallCollisionCount++;
+                }
+
+                // Gestion des collisions entre les cercles
+                for (const shape of shapes) {
+                    if (shape !== this) {
+                        const distance = Math.sqrt((this.x - shape.x) ** 2 + (this.y - shape.y) ** 2);
+
+                        if (distance < this.radius + shape.radius) {
+                            // Collision détectée, inversion des vitesses
+                            const tempSpeedX = this.speedX;
+                            const tempSpeedY = this.speedY;
+
+                            this.speedX = shape.speedX;
+                            this.speedY = shape.speedY;
+
+                            shape.speedX = tempSpeedX;
+                            shape.speedY = tempSpeedY;
+
+                            this.changeColor();
+                            shape.changeColor();
+                            collisionCount++;
+                        }
+                    }
+                }
+
+                this.draw();
+            }
+
+            changeColor() {
+                // Changer la couleur du cercle après une collision
+                this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+            }
+
+            getColorName() {
+                // Récupérer le nom de la couleur en fonction du RGB
+                const colorMap = {
+                    "rgb(255, 0, 0)": "Red",
+                    "rgb(0, 0, 255)": "Blue",
+                    "rgb(128, 0, 128)": "Purple",
+                    // Ajouter d'autres couleurs au besoin
+                };
+
+                // Vérifier si la couleur est présente dans la carte, sinon retourner le RGB
+                return colorMap[this.color] || this.color;
+            }
+        }
+
+        function createShapes(numShapes) {
+            for (let i = 0; i < numShapes; i++) {
+                const radius = Math.random() * 30 + 10;
+                const x = Math.random() * (canvas.width - radius * 2) + radius;
+                const y = Math.random() * (canvas.height - radius * 2) + radius;
+                const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+                const speedX = (Math.random() - 0.5) * 4;
+                const speedY = (Math.random() - 0.5) * 4;
+
+                shapes.push(new Shape(x, y, radius, color, speedX, speedY));
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (const shape of shapes) {
+                shape.update();
+            }
+
+            // Affichage en temps réel du nombre de collisions entre cercles et avec les bords
+            const stats = document.getElementById('stats');
+            stats.innerHTML = `Collisions entre cercles: ${collisionCount}<br>`;
+            stats.innerHTML += `Collisions avec les bords: ${wallCollisionCount}<br>`;
+
+            // Affichage en temps réel du nombre de cercles de chaque couleur et du nombre total de collisions
+            const colorCount = {};
+            for (const shape of shapes) {
+                if (!colorCount[shape.color]) {
+                    colorCount[shape.color] = 1;
+                } else {
+                    colorCount[shape.color]++;
+                }
+            }
+
+            for (const color in colorCount) {
+                stats.innerHTML += `${color}: ${colorCount[color]}<br>`;
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            shapes.length = 0;
+            createShapes(10);
+        });
+
+        createShapes(10);
+        animate();
+    </script>
+
+    <!-- Zone d'affichage des statistiques en temps réel -->
+    <div id="stats" style="position: fixed; top: 10px; right: 10px;"></div>
+</body>
+</html>

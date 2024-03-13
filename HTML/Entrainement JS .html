@@ -15,12 +15,44 @@
         canvas {
             display: block;
         }
+
+        #gameInterface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 999;
+        }
+
+        #gameInterface button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
-    <title>Animation avec collisions</title>
+    <title>Circle Game</title>
 </head>
 <body>
+    <!-- Interface du jeu -->
+    <div id="gameInterface">
+        <h1>Circle Game</h1>
+        <button id="startButton" onclick="startGame()">Start Game</button>
+        <button id="pauseButton" onclick="pauseGame()" style="display: none;">Pause Game</button>
+        <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
+    </div>
+
     <!-- Canvas pour le rendu graphique -->
     <canvas id="canvas"></canvas>
+
+    <!-- Zone d'affichage des statistiques en temps réel -->
+    <div id="stats" style="position: fixed; top: 10px; right: 10px;"></div>
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -32,105 +64,79 @@
         let wallCollisionCount = 0; // Compteur de collisions avec les bords
 
         const shapes = [];
+        let gameRunning = false;
+        let timer;
 
         class Shape {
-            constructor(x, y, radius, color, speedX, speedY) {
-                this.x = x;
-                this.y = y;
-                this.radius = radius;
-                this.color = color;
-                this.speedX = speedX;
-                this.speedY = speedY;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-
-                // Affichage du nom de la couleur dans le cercle
-                ctx.fillStyle = "white";
-                ctx.font = "10px Arial";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(this.getColorName(), this.x, this.y);
-
-                ctx.closePath();
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Gestion des collisions avec les bords
-                if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) {
-                    this.speedX = -this.speedX;
-                    this.changeColor();
-                    wallCollisionCount++;
-                }
-
-                if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) {
-                    this.speedY = -this.speedY;
-                    this.changeColor();
-                    wallCollisionCount++;
-                }
-
-                // Gestion des collisions entre les cercles
-                for (const shape of shapes) {
-                    if (shape !== this) {
-                        const distance = Math.sqrt((this.x - shape.x) ** 2 + (this.y - shape.y) ** 2);
-
-                        if (distance < this.radius + shape.radius) {
-                            // Collision détectée, inversion des vitesses
-                            const tempSpeedX = this.speedX;
-                            const tempSpeedY = this.speedY;
-
-                            this.speedX = shape.speedX;
-                            this.speedY = shape.speedY;
-
-                            shape.speedX = tempSpeedX;
-                            shape.speedY = tempSpeedY;
-
-                            this.changeColor();
-                            shape.changeColor();
-                            collisionCount++;
-                        }
-                    }
-                }
-
-                this.draw();
-            }
-
-            changeColor() {
-                // Changer la couleur du cercle après une collision
-                this.color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-            }
-
-            getColorName() {
-                // Récupérer le nom de la couleur en fonction du RGB
-                const colorMap = {
-                    "rgb(255, 0, 0)": "Red",
-                    "rgb(0, 0, 255)": "Blue",
-                    "rgb(128, 0, 128)": "Purple",
-                    // Ajouter d'autres couleurs au besoin
-                };
-
-                // Vérifier si la couleur est présente dans la carte, sinon retourner le RGB
-                return colorMap[this.color] || this.color;
-            }
+            // ... (inchangé)
         }
 
         function createShapes(numShapes) {
-            for (let i = 0; i < numShapes; i++) {
-                const radius = Math.random() * 30 + 10;
-                const x = Math.random() * (canvas.width - radius * 2) + radius;
-                const y = Math.random() * (canvas.height - radius * 2) + radius;
-                const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-                const speedX = (Math.random() - 0.5) * 4;
-                const speedY = (Math.random() - 0.5) * 4;
+            // ... (inchangé)
+        }
 
-                shapes.push(new Shape(x, y, radius, color, speedX, speedY));
+        function startGame() {
+            // Initialiser le jeu
+            resetGame();
+            gameRunning = true;
+            timer = setTimeout(endGame, 120000); // 2 minutes
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('pauseButton').style.display = 'block';
+            animate(); // Lancer l'animation ici
+        }
+
+        function pauseGame() {
+            // Mettre le jeu en pause
+            gameRunning = !gameRunning;
+
+            if (gameRunning) {
+                timer = setTimeout(endGame, 120000); // Continuer le timer
+            } else {
+                clearTimeout(timer); // Mettre en pause le timer
+            }
+        }
+
+        function restartGame() {
+            // Redémarrer le jeu
+            resetGame();
+            gameRunning = true;
+            timer = setTimeout(endGame, 120000);
+            document.getElementById('pauseButton').style.display = 'block';
+            document.getElementById('restartButton').style.display = 'none';
+            animate(); // Lancer l'animation ici
+        }
+
+        function resetGame() {
+            // Réinitialiser les compteurs et le canvas
+            collisionCount = 0;
+            wallCollisionCount = 0;
+            shapes.length = 0;
+            createShapes(10);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('pauseButton').style.display = 'none';
+            document.getElementById('restartButton').style.display = 'none';
+        }
+
+        function endGame() {
+            // Fin du jeu, afficher l'interface pour entrer le nombre de collisions
+            gameRunning = false;
+            clearTimeout(timer);
+
+            const guess = prompt("Game Over! Enter your guess for the total number of collisions:");
+
+            if (guess !== null) {
+                const difference = Math.abs(collisionCount - parseInt(guess));
+                const maxDifference = 5;
+
+                if (difference <= maxDifference) {
+                    alert("Congratulations! You guessed correctly. You won!");
+                } else {
+                    alert(`Sorry, you lost! The correct number of collisions was ${collisionCount}.`);
+                }
+
+                // Afficher l'interface de redémarrage
+                document.getElementById('restartButton').style.display = 'block';
             }
         }
 
@@ -166,18 +172,17 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
-            shapes.length = 0;
-            createShapes(10);
+            resetGame();
         });
 
         createShapes(10);
-        animate();
     </script>
-
-    <!-- Zone d'affichage des statistiques en temps réel -->
-    <div id="stats" style="position: fixed; top: 10px; right: 10px;"></div>
 </body>
 </html>
+
+
+
+
 
 
 

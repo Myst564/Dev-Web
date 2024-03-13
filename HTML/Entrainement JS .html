@@ -36,23 +36,53 @@
             font-size: 16px;
             cursor: pointer;
         }
+
+        #score {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+        }
+
+        #timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: none;
+        }
+
+        #pauseOverlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: red;
+            text-align: center;
+        }
     </style>
-    <title>Circle Game</title>
+    <title>Interactive Circle Game</title>
 </head>
 <body>
     <!-- Interface du jeu -->
     <div id="gameInterface">
-        <h1>Circle Game</h1>
+        <h1>Interactive Circle Game</h1>
         <button id="startButton" onclick="startGame()">Start Game</button>
-        <button id="pauseButton" onclick="pauseGame()" style="display: none;">Pause Game</button>
         <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
+        <button id="pauseButton" onclick="togglePause()" style="display: none;">Pause</button>
     </div>
 
     <!-- Canvas pour le rendu graphique -->
     <canvas id="canvas"></canvas>
 
-    <!-- Zone d'affichage des statistiques en temps réel -->
-    <div id="stats" style="position: fixed; top: 10px; right: 10px;"></div>
+    <!-- Zone d'affichage du score -->
+    <div id="score"></div>
+
+    <!-- Zone d'affichage du timer -->
+    <div id="timer"></div>
+
+    <!-- Overlay de pause -->
+    <div id="pauseOverlay">Pause</div>
 
     <script>
         const canvas = document.getElementById('canvas');
@@ -60,111 +90,197 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let collisionCount = 0; // Compteur de collisions entre cercles
-        let wallCollisionCount = 0; // Compteur de collisions avec les bords
-
-        const shapes = [];
-        let gameRunning = false;
+        const circles = [];
+        let score = 0;
         let timer;
+        let paused = false;
+        let aimPercentage = 100; // Pourcentage de visée (commence à 100%)
+        let aimDecrease = 1; // Pourcentage perdu pour chaque clic manqué
+        let minCircleRadius = 10; // Rayon minimum des cercles
+        let maxCircleRadius = 30; // Rayon maximum des cercles
+        let increaseFactor = 1.2; // Facteur d'augmentation du rayon en cas de clic manqué
+        let movingCircles = false; // Indicateur si les cercles se déplacent
 
-        class Shape {
-            // ... (inchangé)
+        class Circle {
+            constructor(x, y, radius, color, speed) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.speed = speed;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            update() {
+                // Mettre à jour la position du cercle de manière aléatoire
+                this.x += (Math.random() - 0.5) * this.speed;
+                this.y += (Math.random() - 0.5) * this.speed;
+
+                // S'assurer que le cercle reste dans la fenêtre du navigateur
+                this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+                this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+            }
+
+            clicked(mouseX, mouseY) {
+                const distance = Math.sqrt((this.x - mouseX) ** 2 + (this.y - mouseY) ** 2);
+                return distance <= this.radius;
+            }
         }
 
-        function createShapes(numShapes) {
-            // ... (inchangé)
+        function createCircles(numCircles) {
+            for (let i = 0; i < numCircles; i++) {
+                const radius = Math.random() * (maxCircleRadius - minCircleRadius) + minCircleRadius;
+                const x = Math.random() * (canvas.width - radius * 2) + radius;
+                const y = Math.random() * (canvas.height - radius * 2) + radius;
+                const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
+                const speed = 3; // Vitesse de déplacement
+
+                circles.push(new Circle(x, y, radius, color, speed));
+            }
         }
 
         function startGame() {
-            // Initialiser le jeu
             resetGame();
-            gameRunning = true;
-            timer = setTimeout(endGame, 120000); // 2 minutes
-            document.getElementById('startButton').style.display = 'none';
+            document.getElementById('gameInterface').style.display = 'none';
+            document.getElementById('restartButton').style.display = 'block';
             document.getElementById('pauseButton').style.display = 'block';
-            animate(); // Lancer l'animation ici
-        }
-
-        function pauseGame() {
-            // Mettre le jeu en pause
-            gameRunning = !gameRunning;
-
-            if (gameRunning) {
-                timer = setTimeout(endGame, 120000); // Continuer le timer
-            } else {
-                clearTimeout(timer); // Mettre en pause le timer
-            }
-        }
-
-        function restartGame() {
-            // Redémarrer le jeu
-            resetGame();
-            gameRunning = true;
-            timer = setTimeout(endGame, 120000);
-            document.getElementById('pauseButton').style.display = 'block';
-            document.getElementById('restartButton').style.display = 'none';
-            animate(); // Lancer l'animation ici
+            document.getElementById('timer').style.display = 'block';
+            animate();
         }
 
         function resetGame() {
-            // Réinitialiser les compteurs et le canvas
-            collisionCount = 0;
-            wallCollisionCount = 0;
-            shapes.length = 0;
-            createShapes(10);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            document.getElementById('startButton').style.display = 'none';
-            document.getElementById('pauseButton').style.display = 'none';
-            document.getElementById('restartButton').style.display = 'none';
+            clearInterval(timer); // Arrêter le timer de la partie précédente
+            circles.length = 0;
+            createCircles(10);
+            score = 0;
+            aimPercentage = 100; // Réinitialiser le pourcentage de visée
+            movingCircles = false; // Réinitialiser le déplacement des cercles
+            updateScore();
+            startTimer();
         }
 
-        function endGame() {
-            // Fin du jeu, afficher l'interface pour entrer le nombre de collisions
-            gameRunning = false;
-            clearTimeout(timer);
-
-            const guess = prompt("Game Over! Enter your guess for the total number of collisions:");
-
-            if (guess !== null) {
-                const difference = Math.abs(collisionCount - parseInt(guess));
-                const maxDifference = 5;
-
-                if (difference <= maxDifference) {
-                    alert("Congratulations! You guessed correctly. You won!");
-                } else {
-                    alert(`Sorry, you lost! The correct number of collisions was ${collisionCount}.`);
-                }
-
-                // Afficher l'interface de redémarrage
-                document.getElementById('restartButton').style.display = 'block';
-            }
+        function restartGame() {
+            document.getElementById('gameInterface').style.display = 'none';
+            resetGame();
         }
 
         function animate() {
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            for (const shape of shapes) {
-                shape.update();
+            for (const circle of circles) {
+                if (movingCircles) {
+                    circle.update();
+                }
+                circle.draw();
             }
 
-            // Affichage en temps réel du nombre de collisions entre cercles et avec les bords
-            const stats = document.getElementById('stats');
-            stats.innerHTML = `Collisions entre cercles: ${collisionCount}<br>`;
-            stats.innerHTML += `Collisions avec les bords: ${wallCollisionCount}<br>`;
+            // Affichage en temps réel du score
+            updateScore();
 
-            // Affichage en temps réel du nombre de cercles de chaque couleur et du nombre total de collisions
-            const colorCount = {};
-            for (const shape of shapes) {
-                if (!colorCount[shape.color]) {
-                    colorCount[shape.color] = 1;
-                } else {
-                    colorCount[shape.color]++;
+            // Affichage du message de pause si la partie est en pause
+            if (paused) {
+                document.getElementById('pauseOverlay').style.display = 'block';
+            } else {
+                document.getElementById('pauseOverlay').style.display = 'none';
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').innerHTML = `Score: ${score} | Aim: ${aimPercentage.toFixed(1)}%`;
+        }
+
+        function startTimer() {
+            let timeLeft = 30; // 30 secondes
+
+            timer = setInterval(() => {
+                document.getElementById('timer').innerHTML = `Time Left: ${timeLeft}s`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(timer);
+            document.getElementById('gameInterface').style.display = 'flex';
+            document.getElementById('restartButton').style.display = 'block';
+            document.getElementById('pauseButton').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('pauseOverlay').style.display = 'none';
+        }
+
+        function togglePause() {
+            paused = !paused;
+
+            if (paused) {
+                clearInterval(timer);
+            } else {
+                startTimer();
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (!paused) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                for (let i = circles.length - 1; i >= 0; i--) {
+                    if (circles[i].clicked(mouseX, mouseY)) {
+                        // Le cercle a été cliqué, augmenter le score et ajuster la visée
+                        circles.splice(i, 1);
+                        score++;
+                        updateAim(true); // Clic réussi
+                        updateScore();
+
+                        // Si le nombre de cercles cliqués atteint 15, activer le déplacement
+                        if (score === 15) {
+                            movingCircles = true;
+                        }
+
+                        break; // Sortir de la boucle après avoir trouvé le cercle cliqué
+                    } else {
+                        // Clic manqué, ajuster la visée
+                        updateAim(false);
+                    }
+                }
+
+                // Si tous les cercles sont cliqués, en créer de nouveaux
+                if (circles.length === 0) {
+                    createCircles(10);
+                }
+            }
+        });
+
+        function updateAim(successfulClick) {
+            if (successfulClick) {
+                // Augmenter le pourcentage de visée pour un clic réussi
+                aimPercentage += 5;
+            } else {
+                // Diminuer le pourcentage de visée pour un clic manqué
+                aimPercentage -= aimDecrease;
+
+                // Ajuster la taille des cercles en fonction du pourcentage de visée
+                for (const circle of circles) {
+                    circle.radius *= increaseFactor;
                 }
             }
 
-            for (const color in colorCount) {
-                stats.innerHTML += `${color}: ${colorCount[color]}<br>`;
+            // Limiter le pourcentage de visée entre 0 et 100
+            aimPercentage = Math.max(0, Math.min(100, aimPercentage));
+
+            // Ajuster la taille des cercles en fonction du pourcentage de visée
+            for (const circle of circles) {
+                circle.radius = minCircleRadius + (maxCircleRadius - minCircleRadius) * (aimPercentage / 100);
             }
         }
 
@@ -175,10 +291,28 @@
             resetGame();
         });
 
-        createShapes(10);
+        createCircles(10);
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

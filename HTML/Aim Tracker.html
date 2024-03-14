@@ -99,16 +99,16 @@
         let minCircleRadius = 10; // Rayon minimum des cercles
         let maxCircleRadius = 30; // Rayon maximum des cercles
         let increaseFactor = 1.2; // Facteur d'augmentation du rayon en cas de clic manqué
-        let decreaseFactor = 0.8; // Facteur de réduction du rayon en cas de clic réussi
         let movingCircles = false; // Indicateur si les cercles se déplacent
 
         class Circle {
-            constructor(x, y, radius, color, speed) {
+            constructor(x, y, radius, color, speedX, speedY) {
                 this.x = x;
                 this.y = y;
                 this.radius = radius;
                 this.color = color;
-                this.speed = speed;
+                this.speedX = speedX;
+                this.speedY = speedY;
             }
 
             draw() {
@@ -120,32 +120,55 @@
             }
 
             update() {
-                // Mettre à jour la position du cercle de manière aléatoire
-                this.x += (Math.random() - 0.5) * this.speed;
-                this.y += (Math.random() - 0.5) * this.speed;
+                // Mettre à jour la position du cercle en ajoutant la vitesse
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-                // S'assurer que le cercle reste dans la fenêtre du navigateur
-                this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
-                this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+                // Gérer les collisions avec les bords du navigateur
+                if (this.x - this.radius <= 0 || this.x + this.radius >= canvas.width) {
+                    this.speedX *= -1; // Inverser la direction horizontale
+                }
+                if (this.y - this.radius <= 0 || this.y + this.radius >= canvas.height) {
+                    this.speedY *= -1; // Inverser la direction verticale
+                }
+            }
+
+            checkCollision(otherCircle) {
+                const dx = this.x - otherCircle.x;
+                const dy = this.y - otherCircle.y;
+                const distance = Math.sqrt(dx * dx + dy * dy)
+                
+                // Si la distance entre les centres des cercles est inférieur ou égale a la somme de leur rayon
+                if (distance <= this.radius + otherCircle.radius) {
+                    // Calculez les vecteurs de direction 
+                    const collisionAngle = Math.antan2(dy, dx);
+                    const speedX1 = this.speedX * Math.cos(collisionAngle) + this.speedY * Math.sin(collisionAngle);
+                    const speedY1 = this.speedY * Math.cos(collisionAngle) + this.speedX * Math.sin(collisionAngle);
+                    const speedX2 = OtherCircle.speedX * Math.cos(collisionAngle) - otherCircle.speedX * Math.sin(collisionAngle);
+                    const speedY2 = OtherCircle.speedY * Math.cos(collisionAngle) - otherCircle.speedY * Math.sin(collisionAngle);
+
+                    // Echangez les vitesses 
+                    this.speedX = speedX2;
+                    this.speedY = speedY2 
+                    otherCircle.speedX = speedX1 
+                    otherCircle.speedY = speedY1 
+
+                    // S'assurer que les cercles ne se chevauchent pas
+                    const overlap = this.radius + otherCircle.radius - distance + 1;
+                    this.x += overlap * Math.cos(collisionAngle);
+                    this.y += overlap * Math.sin(collisionAngle);
+                    otherCircle.x -= overlap * Math.cos(collisionAngle);
+                    otherCircle.y -= overlap * Math.sin(collisionAngle);
+                }
             }
 
             clicked(mouseX, mouseY) {
                 const distance = Math.sqrt((this.x - mouseX) ** 2 + (this.y - mouseY) ** 2);
                 return distance <= this.radius;
             }
-
-            increaseSize() {
-                this.radius *= increaseFactor;
-                // Limiter l'augmentation du rayon à la valeur maximale
-                this.radius = Math.min(this.radius, maxCircleRadius);
-            }
-
-            decreaseSize() {
-                this.radius *= decreaseFactor;
-                // Limiter la réduction du rayon à la valeur minimale
-                this.radius = Math.max(this.radius, minCircleRadius);
-            }
         }
+
+
 
         function createCircles(numCircles) {
             for (let i = 0; i < numCircles; i++) {
@@ -153,9 +176,10 @@
                 const x = Math.random() * (canvas.width - radius * 2) + radius;
                 const y = Math.random() * (canvas.height - radius * 2) + radius;
                 const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
-                const speed = 3; // Vitesse de déplacement
+                const speedX = (Math.random() - 0.5) * 5; // Vitesse horizontale aléatoire
+                const speedY = (Math.random() - 0.5) * 5; // Vitesse verticale aléatoire
 
-                circles.push(new Circle(x, y, radius, color, speed));
+                circles.push(new Circle(x, y, radius, color, speedX, speedY));
             }
         }
 
@@ -188,9 +212,14 @@
             requestAnimationFrame(animate);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            for (const circle of circles) {
+            for (let i = 0; i < circles.length; i++) {
+                const circle = circles[i];
                 if (movingCircles) {
                     circle.update();
+                    // Vérifiez les collisions avec les autres cercles 
+                    for (let j = i + 1; j < circles.length; j++) {
+
+                    }
                 }
                 circle.draw();
             }
@@ -247,37 +276,18 @@
                 const mouseX = e.clientX;
                 const mouseY = e.clientY;
 
-                let clickedCircle = null;
+                for (let i = circles.length - 1; i >= 0; i--) {
+                    if (circles[i].clicked(mouseX, mouseY)) {
+                        // Le cercle a été cliqué, augmenter le score et ajuster la visée
+                        circles.splice(i, 1);
+                        score++;
+                        updateAim(true); // Clic réussi
+                        updateScore();
 
-                for (const circle of circles) {
-                    if (circle.clicked(mouseX, mouseY)) {
-                        clickedCircle = circle;
-                        break;
-                    }
-                }
-
-                if (clickedCircle) {
-                    // Si un cercle est cliqué, réduire la taille de tous les cercles restants
-                    for (const circle of circles) {
-                        circle.decreaseSize();
-                    }
-                } else {
-                    // Si aucun cercle n'est cliqué, augmenter la taille de tous les cercles présents
-                    for (const circle of circles) {
-                        circle.increaseSize();
-                    }
-                    // Diminuer le pourcentage de visée en cas de clic manqué
-                    aimPercentage -= 5;
-                }
-
-                // Supprimer le cercle cliqué de la liste
-                if (clickedCircle) {
-                    circles.splice(circles.indexOf(clickedCircle), 1);
-                    score++;
-
-                    // Si le nombre de cercles cliqués atteint 15, activer le déplacement
-                    if (score === 15) {
-                        movingCircles = true;
+                        break; // Sortir de la boucle après avoir trouvé le cercle cliqué
+                    } else {
+                        // Clic manqué, ajuster la visée
+                        updateAim(false);
                     }
                 }
 
@@ -288,6 +298,29 @@
             }
         });
 
+        function updateAim(successfulClick) {
+            if (successfulClick) {
+                // Augmenter le pourcentage de visée pour un clic réussi
+                aimPercentage += 5;
+            } else {
+                // Diminuer le pourcentage de visée pour un clic manqué
+                aimPercentage -= aimDecrease;
+
+                // Ajuster la taille des cercles en fonction du pourcentage de visée
+                for (const circle of circles) {
+                    circle.radius *= increaseFactor;
+                }
+            }
+
+            // Limiter le pourcentage de visée entre 0 et 100
+            aimPercentage = Math.max(0, Math.min(100, aimPercentage));
+
+            // Ajuster la taille des cercles en fonction du pourcentage de visée
+            for (const circle of circles) {
+                circle.radius = minCircleRadius + (maxCircleRadius - minCircleRadius) * (aimPercentage / 100);
+            }
+        }
+
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -295,10 +328,24 @@
             resetGame();
         });
 
+        // Initialiser le jeu avec 10 cercles
         createCircles(10);
+
+        // Activer le déplacement des cercles après avoir visé 15 cercles
+        canvas.addEventListener('click', () => {
+            if (!movingCircles && score >= 15) {
+                movingCircles = true;
+                for (const circle of circles) {
+                    circle.speedX = (Math.random() - 0.5) * 5;
+                    circle.speedY = (Math.random() - 0.5) * 5;
+                }
+            }
+        });
     </script>
 </body>
 </html>
+
+
 
 
 

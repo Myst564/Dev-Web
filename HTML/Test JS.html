@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #1a1a1a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #gameInterface {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            z-index: 999;
+        }
+
+        #gameInterface button {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #score {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+        }
+
+        #timer {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: none;
+        }
+
+        #pauseOverlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: red;
+            text-align: center;
+        }
+    </style>
+    <title>Interactive Circle Game</title>
+</head>
+<body>
+    <!-- Interface du jeu -->
+    <div id="gameInterface">
+        <h1>Interactive Circle Game</h1>
+        <button id="startButton" onclick="startGame()">Start Game</button>
+        <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
+        <button id="pauseButton" onclick="togglePause()" style="display: none;">Pause</button>
+    </div>
+
+    <!-- Canvas pour le rendu graphique -->
+    <canvas id="canvas"></canvas>
+
+    <!-- Zone d'affichage du score -->
+    <div id="score"></div>
+
+    <!-- Zone d'affichage du timer -->
+    <div id="timer"></div>
+
+    <!-- Overlay de pause -->
+    <div id="pauseOverlay">Pause</div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const circles = [];
+        let score = 0;
+        let timer;
+        let paused = false;
+        let aimPercentage = 100; // Pourcentage de visée (commence à 100%)
+        let aimDecrease = 1; // Pourcentage perdu pour chaque clic manqué
+        let minCircleRadius = 20; // Rayon minimum des cercles
+        let maxCircleRadius = 50; // Rayon maximum des cercles
+        let increaseFactor = 1.2; // Facteur d'augmentation du rayon en cas de clic manqué
+        let movingCircles = false; // Indicateur si les cercles se déplacent
+
+        class Circle {
+            constructor(x, y, radius, color, speed) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.speed = speed;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.strokeStyle = this.color;
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            update() {
+                // Mettre à jour la position du cercle de manière aléatoire
+                this.x += (Math.random() - 0.5) * this.speed;
+                this.y += (Math.random() - 0.5) * this.speed;
+
+                // S'assurer que le cercle reste dans la fenêtre du navigateur
+                this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
+                this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
+            }
+
+            clicked(mouseX, mouseY) {
+                const distance = Math.sqrt((this.x - mouseX) ** 2 + (this.y - mouseY) ** 2);
+                return distance <= this.radius;
+            }
+        }
+
+        function createCircles(numCircles) {
+            for (let i = 0; i < numCircles; i++) {
+                const radius = Math.random() * (maxCircleRadius - minCircleRadius) + minCircleRadius;
+                const x = Math.random() * (canvas.width - radius * 2) + radius;
+                const y = Math.random() * (canvas.height - radius * 2) + radius;
+                const color = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.8)`;
+                const speed = 3; // Vitesse de déplacement
+
+                circles.push(new Circle(x, y, radius, color, speed));
+            }
+        }
+
+        function startGame() {
+            resetGame();
+            document.getElementById('gameInterface').style.display = 'none';
+            document.getElementById('restartButton').style.display = 'block';
+            document.getElementById('pauseButton').style.display = 'block';
+            document.getElementById('timer').style.display = 'block';
+            animate();
+        }
+
+        function resetGame() {
+            clearInterval(timer); // Arrêter le timer de la partie précédente
+            circles.length = 0;
+            createCircles(10);
+            score = 0;
+            aimPercentage = 100; // Réinitialiser le pourcentage de visée
+            movingCircles = false; // Réinitialiser le déplacement des cercles
+            updateScore();
+            startTimer();
+        }
+
+        function restartGame() {
+            document.getElementById('gameInterface').style.display = 'none';
+            resetGame();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (const circle of circles) {
+                if (movingCircles) {
+                    circle.update();
+                }
+                circle.draw();
+            }
+
+            // Affichage en temps réel du score
+            updateScore();
+
+            // Affichage du message de pause si la partie est en pause
+            if (paused) {
+                document.getElementById('pauseOverlay').style.display = 'block';
+            } else {
+                document.getElementById('pauseOverlay').style.display = 'none';
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').innerHTML = `Score: ${score} | Aim: ${aimPercentage}%`;
+        }
+
+        function startTimer() {
+            let timeLeft = 90; // 90 secondes
+
+            timer = setInterval(() => {
+                document.getElementById('timer').innerHTML = `Time Left: ${Math.floor(timeLeft / 60)}m ${timeLeft % 60}s`;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(timer);
+            document.getElementById('gameInterface').style.display = 'flex';
+            document.getElementById('restartButton').style.display = 'block';
+            document.getElementById('pauseButton').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('pauseOverlay').style.display = 'none';
+        }
+
+        function togglePause() {
+            paused = !paused;
+
+            if (paused) {
+                clearInterval(timer);
+            } else {
+                startTimer();
+            }
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (!paused) {
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                for (let i = circles.length - 1; i >= 0; i--) {
+                    if (circles[i].clicked(mouseX, mouseY)) {
+                        // Le cercle a été cliqué, augmenter le score et ajuster la visée
+                        circles.splice(i, 1);
+                        score++;
+                        updateAim(true); // Clic réussi
+                        updateScore();
+
+                        // Si le nombre de cercles cliqués atteint 15, activer le déplacement
+                        if (score === 15) {
+                            movingCircles = true;
+                        }
+
+                        break; // Sortir de la boucle après avoir trouvé le cercle cliqué
+                    } else {
+                        // Clic manqué, ajuster la visée
+                        updateAim(false);
+                    }
+                }
+
+                // Si tous les cercles sont cliqués, en créer de nouveaux
+                if (circles.length === 0) {
+                    createCircles(10);
+                }
+            }
+        });
+
+        function updateAim(successfulClick) {
+            if (successfulClick) {
+                // Augmenter le pourcentage de visée pour un clic réussi
+                aimPercentage += 5;
+            } else {
+                // Diminuer le pourcentage de visée pour un clic manqué
+                aimPercentage -= aimDecrease;
+
+                // Ajuster la taille des cercles en fonction du pourcentage de visée
+                for (const circle of circles) {
+                    circle.radius *= increaseFactor;
+                }
+            }
+
+            // Limiter le pourcentage de visée entre 0 et 100
+            aimPercentage = Math.max(0, Math.min(100, aimPercentage));
+
+            // Ajuster la taille des cercles en fonction du pourcentage de visée
+            for (const circle of circles) {
+                circle.radius = minCircleRadius + (maxCircleRadius - minCircleRadius) * (aimPercentage / 100);
+            }
+        }
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            resetGame();
+        });
+
+        createCircles(10);
+    </script>
+</body>
+</html>

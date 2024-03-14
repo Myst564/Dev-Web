@@ -136,44 +136,39 @@
             checkCollision(otherCircle) {
                 const dx = this.x - otherCircle.x;
                 const dy = this.y - otherCircle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                return distance <= this.radius + otherCircle.radius;
+                const distance = Math.sqrt(dx * dx + dy * dy)
+                
+                // Si la distance entre les centres des cercles est inférieur ou égale a la somme de leur rayon
+                if (distance <= this.radius + otherCircle.radius) {
+                    // Calculez les vecteurs de direction 
+                    const collisionAngle = Math.atan2(dy, dx);
+                    const speedX1 = this.speedX * Math.cos(collisionAngle) + this.speedY * Math.sin(collisionAngle);
+                    const speedY1 = this.speedY * Math.cos(collisionAngle) + this.speedX * Math.sin(collisionAngle);
+                    const speedX2 = therCircle.speedX * Math.cos(collisionAngle) - otherCircle.speedX * Math.sin(collisionAngle);
+                    const speedY2 = otherCircle.speedY * Math.cos(collisionAngle) - otherCircle.speedY * Math.sin(collisionAngle);
+
+                    // Echangez les vitesses 
+                    this.speedX = speedX2;
+                    this.speedY = speedY2 
+                    otherCircle.speedX = speedX1 
+                    otherCircle.speedY = speedY1 
+
+                    // S'assurer que les cercles ne se chevauchent pas
+                    const overlap = this.radius + otherCircle.radius - distance + 1;
+                    this.x += overlap * Math.cos(collisionAngle);
+                    this.y += overlap * Math.sin(collisionAngle);
+                    otherCircle.x -= overlap * Math.cos(collisionAngle);
+                    otherCircle.y -= overlap * Math.sin(collisionAngle);
+                }
             }
 
-            handleCollision(otherCircle) {
-                const dx = otherCircle.x - this.x;
-                const dy = otherCircle.y - this.y;
-                const collisionAngle = Math.atan2(dy, dx);
-
-                // Calculer les nouvelles vitesses après la collision
-                const magnitude1 = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
-                const magnitude2 = Math.sqrt(otherCircle.speedX * otherCircle.speedX + otherCircle.speedY * otherCircle.speedY);
-                const direction1 = Math.atan2(this.speedY, this.speedX);
-                const direction2 = Math.atan2(otherCircle.speedY, otherCircle.speedX);
-
-                const newSpeedX1 = magnitude1 * Math.cos(direction1 - collisionAngle);
-                const newSpeedY1 = magnitude1 * Math.sin(direction1 - collisionAngle);
-                const newSpeedX2 = magnitude2 * Math.cos(direction2 - collisionAngle);
-                const newSpeedY2 = magnitude2 * Math.sin(direction2 - collisionAngle);
-
-                // Calculer les nouvelles vitesses après l'échange
-                const finalSpeedX1 = ((this.radius - otherCircle.radius) * newSpeedX1 + (otherCircle.radius * 2) * newSpeedX2) / (this.radius + otherCircle.radius);
-                const finalSpeedX2 = ((this.radius * 2) * newSpeedX1 + (otherCircle.radius - this.radius) * newSpeedX2) / (this.radius + otherCircle.radius);
-
-                // Appliquer les nouvelles vitesses
-                this.speedX = Math.cos(collisionAngle) * finalSpeedX1 + Math.cos(collisionAngle + Math.PI / 2) * newSpeedY1;
-                this.speedY = Math.sin(collisionAngle) * finalSpeedX1 + Math.sin(collisionAngle + Math.PI / 2) * newSpeedY1;
-                otherCircle.speedX = Math.cos(collisionAngle) * finalSpeedX2 + Math.cos(collisionAngle + Math.PI / 2) * newSpeedY2;
-                otherCircle.speedY = Math.sin(collisionAngle) * finalSpeedX2 + Math.sin(collisionAngle + Math.PI / 2) * newSpeedY2;
-
-                // Éviter que les cercles se superposent
-                const overlap = this.radius + otherCircle.radius - distance + 1;
-                this.x += overlap * Math.cos(collisionAngle);
-                this.y += overlap * Math.sin(collisionAngle);
-                otherCircle.x -= overlap * Math.cos(collisionAngle);
-                otherCircle.y -= overlap * Math.sin(collisionAngle);
+            clicked(mouseX, mouseY) {
+                const distance = Math.sqrt((this.x - mouseX) ** 2 + (this.y - mouseY) ** 2);
+                return distance <= this.radius;
             }
         }
+
+
 
         function createCircles(numCircles) {
             for (let i = 0; i < numCircles; i++) {
@@ -219,17 +214,13 @@
 
             for (let i = 0; i < circles.length; i++) {
                 const circle = circles[i];
-                circle.update();
+                if (movingCircles) {
+                    circle.update();
+                    // Vérifiez les collisions avec les autres cercles 
+                    for (let j = i + 1; j < circles.length; j++) {
 
-                // Vérifiez les collisions avec les autres cercles 
-                for (let j = i + 1; j < circles.length; j++) {
-                    const otherCircle = circles[j];
-                    if (circle.checkCollision(otherCircle)) {
-                        // Réagir à la collision
-                        circle.handleCollision(otherCircle);
                     }
                 }
-
                 circle.draw();
             }
 
@@ -353,7 +344,6 @@
     </script>
 </body>
 </html>
-
 
 
 

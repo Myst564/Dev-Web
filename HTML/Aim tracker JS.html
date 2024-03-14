@@ -66,7 +66,7 @@
 <body>
     <!-- Interface du jeu -->
     <div id="gameInterface">
-        <h1>Interactive Circle Game</h1>
+        <h1>Aim Tracker JS</h1>
         <button id="startButton" onclick="startGame()">Start Game</button>
         <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
         <button id="pauseButton" onclick="togglePause()" style="display: none;">Pause</button>
@@ -102,6 +102,7 @@
         let increaseFactor = 1.2; // Facteur d'augmentation du rayon en cas de clic manqué
         let decreaseFactor = 0.8; // Facteur de réduction du rayon en cas de clic réussi
         let movingCircles = false; // Indicateur si les cercles se déplacent
+        let clickedCircles = 0; // Nombre de cercles cliqués
 
         class Circle {
             constructor(x, y, radius, color, speed) {
@@ -139,12 +140,14 @@
 
             increaseSize() {
                 this.radius *= increaseFactor;
+                // Limiter l'augmentation du rayon à la valeur maximale
+                this.radius = Math.min(this.radius, maxCircleRadius);
             }
 
             decreaseSize() {
                 this.radius *= decreaseFactor;
                 // Limiter le rétrécissement du rayon à la valeur originale
-                this.radius = Math.min(this.radius, this.originalRadius);
+                this.radius = Math.max(this.radius, this.originalRadius);
             }
         }
 
@@ -176,6 +179,7 @@
             score = 0;
             aimPercentage = 100; // Réinitialiser le pourcentage de visée
             movingCircles = false; // Réinitialiser le déplacement des cercles
+            clickedCircles = 0; // Réinitialiser le nombre de cercles cliqués
             updateScore();
             startTimer();
         }
@@ -190,7 +194,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (const circle of circles) {
-                if (!paused) {
+                if (!paused && movingCircles) {
                     circle.update();
                 }
                 circle.draw();
@@ -205,78 +209,71 @@
         }
 
         function startTimer() {
-            let timeLeft = 90; // 90 secondes
-
+            let startTime = Date.now();
             timer = setInterval(() => {
-                document.getElementById('timer').innerHTML = `Time Left: ${timeLeft}s`;
-                timeLeft--;
+                const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+                const remainingTime = 90 - elapsedTime;
 
-                if (timeLeft < 0) {
+                document.getElementById('timer').innerHTML = `Time Remaining: ${remainingTime} sec`;
+
+                if (remainingTime <= 0) {
+                    clearInterval(timer);
                     endGame();
                 }
             }, 1000);
         }
 
-        function endGame() {
-            clearInterval(timer);
-            document.getElementById('gameInterface').style.display = 'flex';
-            document.getElementById('restartButton').style.display = 'block';
-            document.getElementById('pauseButton').style.display = 'none';
-            document.getElementById('timer').style.display = 'none';
-            document.getElementById('pauseOverlay').style.display = 'none';
-        }
-
         function togglePause() {
             paused = !paused;
-
-            if (paused) {
-                clearInterval(timer);
-            } else {
-                startTimer();
-            }
+            document.getElementById('pauseOverlay').style.display = paused ? 'block' : 'none';
         }
 
-        canvas.addEventListener('click', (e) => {
-            if (!paused) {
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
+        function endGame() {
+            alert(`Game Over! Your score: ${score}`);
+            document.getElementById('gameInterface').style.display = 'flex';
+            document.getElementById('restartButton').style.display = 'none';
+            document.getElementById('pauseButton').style.display = 'none';
+            document.getElementById('timer').style.display = 'none';
+        }
 
-                for (let i = circles.length - 1; i >= 0; i--) {
-                    if (circles[i].clicked(mouseX, mouseY)) {
-                        // Le cercle a été cliqué, augmenter le score et le supprimer
-                        circles.splice(i, 1);
+        canvas.addEventListener('click', (event) => {
+            if (!paused) {
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+
+                for (const circle of circles) {
+                    if (circle.clicked(mouseX, mouseY)) {
                         score++;
-                        aimPercentage += aimIncrease; // Augmenter le pourcentage de visée
-                        updateScore();
-                        break; // Sortir de la boucle après avoir trouvé le cercle cliqué
+                        aimPercentage += aimIncrease;
+                        circle.decreaseSize();
+                        clickedCircles++;
+
+                        if (clickedCircles >= 15) {
+                            movingCircles = true;
+                        }
+
+                        if (aimPercentage > 100) {
+                            aimPercentage = 100;
+                        }
+
+                        break;
                     }
                 }
 
-                // Si tous les cercles sont cliqués, en créer de nouveaux
-                if (circles.length === 0) {
-                    createCircles(10);
-                } else {
-                    // Si le clic a échoué, réduire la taille des cercles et diminuer le pourcentage de visée
+                if (clickedCircles < 15) {
                     aimPercentage -= aimDecrease;
                     for (const circle of circles) {
                         if (!circle.clicked(mouseX, mouseY)) {
-                            circle.decreaseSize();
+                            circle.increaseSize();
                         }
                     }
                 }
             }
         });
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            resetGame();
-        });
-
-        createCircles(10);
-    </script>
-</body>
+        </script>
+    </body>
 </html>
+
 
 

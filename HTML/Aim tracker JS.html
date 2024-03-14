@@ -66,7 +66,7 @@
 <body>
     <!-- Interface du jeu -->
     <div id="gameInterface">
-        <h1>Aim Tracker JS</h1>
+        <h1>Interactive Circle Game</h1>
         <button id="startButton" onclick="startGame()">Start Game</button>
         <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
         <button id="pauseButton" onclick="togglePause()" style="display: none;">Pause</button>
@@ -156,8 +156,8 @@
                 const radius = Math.random() * (maxCircleRadius - minCircleRadius) + minCircleRadius;
                 const x = Math.random() * (canvas.width - radius * 2) + radius;
                 const y = Math.random() * (canvas.height - radius * 2) + radius;
-                const color = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.8)`;
-                const speed = 3; // Vitesse de déplacement
+                const speed = Math.random() * 2 + 1; // Vitesse aléatoire entre 1 et 3
+                const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
 
                 circles.push(new Circle(x, y, radius, color, speed));
             }
@@ -177,11 +177,10 @@
             circles.length = 0;
             createCircles(10);
             score = 0;
-            aimPercentage = 100; // Réinitialiser le pourcentage de visée
-            movingCircles = false; // Réinitialiser le déplacement des cercles
-            clickedCircles = 0; // Réinitialiser le nombre de cercles cliqués
             updateScore();
             startTimer();
+            clickedCircles = 0; // Réinitialiser le nombre de cercles cliqués
+            movingCircles = false; // Réinitialiser le mouvement des cercles
         }
 
         function restartGame() {
@@ -248,8 +247,9 @@
                         circle.decreaseSize();
                         clickedCircles++;
 
-                        if (clickedCircles >= 15) {
-                            movingCircles = true;
+                        if (clickedCircles >= 10) {
+                            createCircles(10);
+                            clickedCircles = 0;
                         }
 
                         if (aimPercentage > 100) {
@@ -260,7 +260,7 @@
                     }
                 }
 
-                if (clickedCircles < 15) {
+                if (clickedCircles < 10) {
                     aimPercentage -= aimDecrease;
                     for (const circle of circles) {
                         if (!circle.clicked(mouseX, mouseY)) {
@@ -274,6 +274,7 @@
         </script>
     </body>
 </html>
+
 
 
 

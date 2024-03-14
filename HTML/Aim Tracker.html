@@ -259,15 +259,15 @@
                 if (clickedCircle) {
                     // Si un cercle est cliqué, réduire la taille de tous les cercles restants
                     for (const circle of circles) {
-                        if (circle !== clickedCircle) {
-                            circle.decreaseSize();
-                        }
+                        circle.decreaseSize();
                     }
                 } else {
                     // Si aucun cercle n'est cliqué, augmenter la taille de tous les cercles présents
                     for (const circle of circles) {
                         circle.increaseSize();
                     }
+                    // Diminuer le pourcentage de visée en cas de clic manqué
+                    aimPercentage -= 5;
                 }
 
                 // Supprimer le cercle cliqué de la liste
@@ -299,6 +299,7 @@
     </script>
 </body>
 </html>
+
 
 
 

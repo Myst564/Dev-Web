@@ -66,7 +66,7 @@
 <body>
     <!-- Interface du jeu -->
     <div id="gameInterface">
-        <h1>Aim Tracker JS</h1>
+        <h1>Interactive Circle Game</h1>
         <button id="startButton" onclick="startGame()">Start Game</button>
         <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
         <button id="pauseButton" onclick="togglePause()" style="display: none;">Pause</button>
@@ -95,6 +95,7 @@
         let timer;
         let paused = false;
         let aimPercentage = 100; // Pourcentage de visée (commence à 100%)
+        let aimIncrease = 5; // Pourcentage gagné pour chaque clic réussi
         let aimDecrease = 1; // Pourcentage perdu pour chaque clic manqué
         let minCircleRadius = 20; // Rayon minimum des cercles
         let maxCircleRadius = 50; // Rayon maximum des cercles
@@ -183,19 +184,20 @@
                 circle.draw();
             }
 
-            // Affichage en temps réel du score
+            // Affichage en temps réel du score et du pourcentage de visée
             updateScore();
-
-            // Affichage du message de pause si la partie est en pause
-            if (paused) {
-                document.getElementById('pauseOverlay').style.display = 'block';
-            } else {
-                document.getElementById('pauseOverlay').style.display = 'none';
-            }
+            updateAim();
         }
 
         function updateScore() {
-            document.getElementById('score').innerHTML = `Score: ${score} | Aim: ${aimPercentage}%`;
+            document.getElementById('score').innerHTML = `Score: ${score}`;
+        }
+
+        function updateAim() {
+            // Ajuster la taille des cercles en fonction du pourcentage de visée
+            for (const circle of circles) {
+                circle.radius = minCircleRadius + (maxCircleRadius - minCircleRadius) * (aimPercentage / 100);
+            }
         }
 
         function startTimer() {
@@ -240,7 +242,7 @@
                         // Le cercle a été cliqué, augmenter le score et ajuster la visée
                         circles.splice(i, 1);
                         score++;
-                        updateAim(true); // Clic réussi
+                        aimPercentage += aimIncrease; // Augmenter le pourcentage de visée pour un clic réussi
                         updateScore();
 
                         // Si le nombre de cercles cliqués atteint 15, activer le déplacement
@@ -249,9 +251,6 @@
                         }
 
                         break; // Sortir de la boucle après avoir trouvé le cercle cliqué
-                    } else {
-                        // Clic manqué, ajuster la visée
-                        updateAim(false);
                     }
                 }
 
@@ -261,29 +260,6 @@
                 }
             }
         });
-
-        function updateAim(successfulClick) {
-            if (successfulClick) {
-                // Augmenter le pourcentage de visée pour un clic réussi
-                aimPercentage += 5;
-            } else {
-                // Diminuer le pourcentage de visée pour un clic manqué
-                aimPercentage -= aimDecrease;
-
-                // Ajuster la taille des cercles en fonction du pourcentage de visée
-                for (const circle of circles) {
-                    circle.radius *= increaseFactor;
-                }
-            }
-
-            // Limiter le pourcentage de visée entre 0 et 100
-            aimPercentage = Math.max(0, Math.min(100, aimPercentage));
-
-            // Ajuster la taille des cercles en fonction du pourcentage de visée
-            for (const circle of circles) {
-                circle.radius = minCircleRadius + (maxCircleRadius - minCircleRadius) * (aimPercentage / 100);
-            }
-        }
 
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
@@ -296,3 +272,4 @@
     </script>
 </body>
 </html>
+

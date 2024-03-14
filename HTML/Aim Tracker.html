@@ -141,11 +141,11 @@
                 // Si la distance entre les centres des cercles est inférieur ou égale a la somme de leur rayon
                 if (distance <= this.radius + otherCircle.radius) {
                     // Calculez les vecteurs de direction 
-                    const collisionAngle = Math.antan2(dy, dx);
+                    const collisionAngle = Math.atan2(dy, dx);
                     const speedX1 = this.speedX * Math.cos(collisionAngle) + this.speedY * Math.sin(collisionAngle);
                     const speedY1 = this.speedY * Math.cos(collisionAngle) + this.speedX * Math.sin(collisionAngle);
-                    const speedX2 = OtherCircle.speedX * Math.cos(collisionAngle) - otherCircle.speedX * Math.sin(collisionAngle);
-                    const speedY2 = OtherCircle.speedY * Math.cos(collisionAngle) - otherCircle.speedY * Math.sin(collisionAngle);
+                    const speedX2 = otherCircle.speedX * Math.cos(collisionAngle) - otherCircle.speedX * Math.sin(collisionAngle);
+                    const speedY2 = otherCircle.speedY * Math.cos(collisionAngle) - otherCircle.speedY * Math.sin(collisionAngle);
 
                     // Echangez les vitesses 
                     this.speedX = speedX2;

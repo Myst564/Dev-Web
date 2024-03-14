@@ -95,11 +95,12 @@
         let timer;
         let paused = false;
         let aimPercentage = 100; // Pourcentage de visée (commence à 100%)
-        let aimIncrease = 5; // Pourcentage gagné pour chaque clic réussi
+        let aimIncrease = 2; // Pourcentage gagné pour chaque clic réussi
         let aimDecrease = 1; // Pourcentage perdu pour chaque clic manqué
         let minCircleRadius = 20; // Rayon minimum des cercles
         let maxCircleRadius = 50; // Rayon maximum des cercles
         let increaseFactor = 1.2; // Facteur d'augmentation du rayon en cas de clic manqué
+        let decreaseFactor = 0.8; // Facteur de réduction du rayon en cas de clic réussi
         let movingCircles = false; // Indicateur si les cercles se déplacent
 
         class Circle {
@@ -107,6 +108,7 @@
                 this.x = x;
                 this.y = y;
                 this.radius = radius;
+                this.originalRadius = radius; // Rayon original du cercle
                 this.color = color;
                 this.speed = speed;
             }
@@ -133,6 +135,16 @@
             clicked(mouseX, mouseY) {
                 const distance = Math.sqrt((this.x - mouseX) ** 2 + (this.y - mouseY) ** 2);
                 return distance <= this.radius;
+            }
+
+            increaseSize() {
+                this.radius *= increaseFactor;
+            }
+
+            decreaseSize() {
+                this.radius *= decreaseFactor;
+                // Limiter le rétrécissement du rayon à la valeur originale
+                this.radius = Math.min(this.radius, this.originalRadius);
             }
         }
 
@@ -178,33 +190,25 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (const circle of circles) {
-                if (movingCircles) {
+                if (!paused) {
                     circle.update();
                 }
                 circle.draw();
             }
 
-            // Affichage en temps réel du score et du pourcentage de visée
+            // Affichage en temps réel du score
             updateScore();
-            updateAim();
         }
 
         function updateScore() {
             document.getElementById('score').innerHTML = `Score: ${score}`;
         }
 
-        function updateAim() {
-            // Ajuster la taille des cercles en fonction du pourcentage de visée
-            for (const circle of circles) {
-                circle.radius = minCircleRadius + (maxCircleRadius - minCircleRadius) * (aimPercentage / 100);
-            }
-        }
-
         function startTimer() {
             let timeLeft = 90; // 90 secondes
 
             timer = setInterval(() => {
-                document.getElementById('timer').innerHTML = `Time Left: ${Math.floor(timeLeft / 60)}m ${timeLeft % 60}s`;
+                document.getElementById('timer').innerHTML = `Time Left: ${timeLeft}s`;
                 timeLeft--;
 
                 if (timeLeft < 0) {
@@ -239,17 +243,11 @@
 
                 for (let i = circles.length - 1; i >= 0; i--) {
                     if (circles[i].clicked(mouseX, mouseY)) {
-                        // Le cercle a été cliqué, augmenter le score et ajuster la visée
+                        // Le cercle a été cliqué, augmenter le score et le supprimer
                         circles.splice(i, 1);
                         score++;
-                        aimPercentage += aimIncrease; // Augmenter le pourcentage de visée pour un clic réussi
+                        aimPercentage += aimIncrease; // Augmenter le pourcentage de visée
                         updateScore();
-
-                        // Si le nombre de cercles cliqués atteint 15, activer le déplacement
-                        if (score === 15) {
-                            movingCircles = true;
-                        }
-
                         break; // Sortir de la boucle après avoir trouvé le cercle cliqué
                     }
                 }
@@ -257,6 +255,14 @@
                 // Si tous les cercles sont cliqués, en créer de nouveaux
                 if (circles.length === 0) {
                     createCircles(10);
+                } else {
+                    // Si le clic a échoué, réduire la taille des cercles et diminuer le pourcentage de visée
+                    aimPercentage -= aimDecrease;
+                    for (const circle of circles) {
+                        if (!circle.clicked(mouseX, mouseY)) {
+                            circle.decreaseSize();
+                        }
+                    }
                 }
             }
         });
@@ -272,4 +278,5 @@
     </script>
 </body>
 </html>
+
 

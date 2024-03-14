@@ -66,7 +66,7 @@
 <body>
     <!-- Interface du jeu -->
     <div id="gameInterface">
-        <h1>Aim Tracker JS</h1>
+        <h1>Interactive Circle Game</h1>
         <button id="startButton" onclick="startGame()">Start Game</button>
         <button id="restartButton" onclick="restartGame()" style="display: none;">Restart Game</button>
         <button id="pauseButton" onclick="togglePause()" style="display: none;">Pause</button>
@@ -146,8 +146,8 @@
 
             decreaseSize() {
                 this.radius *= decreaseFactor;
-                // Limiter le rétrécissement du rayon à la valeur originale
-                this.radius = Math.max(this.radius, this.originalRadius);
+                // Limiter la réduction du rayon à la valeur minimale
+                this.radius = Math.max(this.radius, minCircleRadius);
             }
         }
 
@@ -274,6 +274,7 @@
         </script>
     </body>
 </html>
+
 
 
 

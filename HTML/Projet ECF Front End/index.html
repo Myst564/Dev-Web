@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang ="en">
+    <head>
+        <meta charset = "UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale = 1.0">
+        <title>Rick and Morty Randomizer</title>
+        <link href="https://cdn.jsdelivr.net/tailwindcss@2.2.19/dist/tailwind.min.css" rel ="stylesheet">
+        <link href="styles.css" rel="stylesheet">
+    </head>
+    <body> 
+
+    <nav class="bg-gray-800 text-white p-4">
+        <div class="container mx-auto">
+            <span class="text-2xl font-blod">Rick and Morty Randomizer</span>
+        </div>
+    </nav>
+
+    <section class="container mx-auto mt-8">
+        <h2 class="text-3xl font-bold mb-4">Characters</h2>
+
+        <div class="flex flex-wrap space-x-4 mb-4">
+            <button id="randomButton" class="btn">Random Characters</button>
+            <button id="aliveButton" class="btn">Random Alive Characters</button>
+            <button id="deadButton" class="btn">Random Dead Characters</button>
+            <button id="unknownButton" class="btn">Random Unknown Characters</button>
+        </div>
+
+        <div id="CharactersContainer" class="grid grid-cols-1 sm:grind-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <!--Les personnages seront ajoutés ici de manière dynamique-->
+        </div>
+    </section>
+
+    <div id="modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 fmex justify-center items-center">
+        <div class="bg-white p-8 max-w-md w-full rounded-lg">
+            <h2 id="modalTitle" class="text-2xl font-bold mb-4"></h2>
+            <img id="modalImage" scr="" alt="" class="w-full h-auto rounded mb-4">
+            <p id="modalOrigin"></p>
+            <p id="modalLocation"></p>
+            <p id="modalEpisodes"></p>
+            <button id="closeModal" class="btn absolute top-4 right-4">Close</button>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+    </body>
+    </html>

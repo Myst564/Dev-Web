@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+    - "3000:3000"
+
+# 1: Assurez Vous que Docker est installé sur la machine
+# 2: Avoir les fichiers dockerfile et docker-compose.yaml à la racine du projet (pour que l'application puisse fonctionner)
+# 3: Ouvrez un terminal et exécuter la commande suivante pour construire l'image Doker:
+
+# docker-compose build
+
+# 4: Ensuite, lancez le conteneur Docker avec la commande:
+
+# docker-compose up 
+
+# L'application sera accessible à l'adresse `https://localhost:3000` dans votre navigateur

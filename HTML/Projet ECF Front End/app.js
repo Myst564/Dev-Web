@@ -61,40 +61,47 @@ function showModal(character) {
     });
 }
 
-// Ajoutez un écouteur d'évènement pour le bouton "Random Character" et appeler la fonction approprié 
-document.getElementById('randomButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?per_page=12');
-});
-
-
-
 // Fonction pour récupérer et afficher 12 personnages aléatoires
 async function getRandomCharacters(url) {
     const characters = await fetchCharacters(url);
-    displayCharacters(characters);
+    // Sélectionner aléatoirement 12 personnages
+    const randomCharacters = characters.sort(() => Math.random() - 0.5).slice(0, 12);
+    displayCharacters(randomCharacters);
+}
+
+// Fonction pour récupérer et afficher 12 personnages en fonction de l'URL spécifiée
+async function getCharacters(url) {
+    const characters = await fetchCharacters(url);
+    displayCharacters(characters.slice(0, 12)); // Limiter à 12 personnages
 }
 
 // Appeler la fonction pour récupérer et afficher 12 personnages au chargement de la page
 window.onload = () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?per_page=12');
+    getCharacters('https://rickandmortyapi.com/api/character/?per_page=12'); // Au chargement, afficher des personnages aléatoires
 };
 
-// Ajouter des écouteurs d'événements pour les boutons et appeler les fonctions appropriées pour récupérer et afficher les personnages
+// Ajouter des écouteurs d'événements pour chaque bouton et appeler les fonctions appropriées
 document.getElementById('randomButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?per_page=12');
+    // Générer une nouvelle URL avec un paramètre de timestamp pour forcer le rechargement des données
+    const timestamp = new Date().getTime()
+    const url = `https://rickandmortyapi.com/api/character/?per_page=12&timestamp=${timestamp}`;
+
+    // Appeler la fonction pour récupérer et afficher de nouveaux personnages
+    getRandomCharacters(url);
 });
 
 document.getElementById('aliveButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12');
+    getCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
 });
 
 document.getElementById('deadButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12');
+    getCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12'); // Pour le bouton "Random Dead Characters"
 });
 
 document.getElementById('unknownButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12');
+    getCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12'); // Pour le bouton "Random Unknown Characters"
 });
+
 
 
 

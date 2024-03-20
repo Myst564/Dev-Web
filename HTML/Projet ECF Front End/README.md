@@ -25,7 +25,7 @@ To start the application locally, run the following command:
 npm start
 
 
-Open your browser and navigate to `http://localhost:3000` to view the application.
+Open your browser and navigate to `file:///C:/Users/ACS/Documents/GitHub/Dev-Web/HTML/Projet%20ECF%20Front%20End/index.html` to view the application.
 
 ## Features
 
@@ -55,7 +55,7 @@ docker-compose build
 4. Launch the Docker container:
    docker-compose up
 
-5. Access the application at `http://localhost:3000` in your browser.
+5. Access the application at `file:///C:/Users/ACS/Documents/GitHub/Dev-Web/HTML/Projet%20ECF%20Front%20End/index.html` in your browser.
 
 ## Additional Documentation
 

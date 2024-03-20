@@ -22,22 +22,27 @@ h2, h3, .card p {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Ombre portée pour donner un effet cartoon */
 }
 
-/* Logo de rick and Morty*/
-.logo {
-    width: 150px;
-    height: auto;
-    margin: 10px auto; /* Pour centrer horizontalement*/
-    display: block; /* Pour centrer verticalement*/
-    position: absolute; /* Position absolue pour placer le logo*/
-    top: 10px; /* Espacement par rapport au haut de la page*/
-    left: 50%; /* Centrage horizontal*/
-    transform: translate(-50%); /* Centrage Horizontal*/
+/* Titre */ 
+.text-2xl {
+    margin: 0 auto; /* Pour centrer horizontalement*/
+    text-align: center; /* Centrer le texte*/
 }
 
+/* Logo de rick and Morty*/
+.logo {
+    width: 100px;
+    height: auto;
+    margin: 0 auto; /* Pour centrer horizontalement*/
+    display: block; /* Pour centrer verticalement*/
+    position: absolute; /* Position absolue pour placer le logo*/
+    margin-top: 2px; /* Espacement par rapport au haut de la page*/
+    margin-left: 10px; /* Positionné au coin supérieur gauche*/
+    transform: translate(-200%); /* Centrage Horizontal*/
+}
 
 /* Boutons */
 .btn {
-    padding: 8px 16px;
+    padding: 8px 12px;
     background-color: #5f63ad; /* Couleur de fond des boutons */
     color: #fff; /* Couleur du texte des boutons */
     border: none;
@@ -45,6 +50,14 @@ h2, h3, .card p {
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-family: 'Roboto', sans-serif; /* Police "cartoon" pour les boutons*/
+    font-size: 14px; /* Réduire la taille de la police */
+    margin: 5px; /* Marge entre les boutons */
+    width: calc(50% - 10px); /* Largeur de 50% moins la marge */
+}
+
+/* Affichage du bouton "Random Unknow Character" */
+#unknownButton {
+    display: inline-block; 
 }
 
 .btn:hover {
@@ -83,6 +96,7 @@ nav {
 
 .btn {
     background-color: #5f63ad; /* Boutons */
+    width: calc(100% - 10px); /* Largeur de 100% de moins la marge */ 
 }
 
 .btn:hover {
@@ -91,5 +105,32 @@ nav {
 
 .card {
     background-color: #1f2122; /* Cartes */
+}
+
+/* Media Queries pour les appareils mobiles*/
+@media (max-width: 320px) {
+    /* Réorganiser le contenu pour les appareils mobiles */
+    .container {
+        padding: 0 20px; /* Ajoutez un padding sur les côtés pour les petits écrans*/
+    }
+
+    .btn {
+        font-size: 14px; /* Réduire la taille de la police des boutons pour les petits écrans */
+        width: calc(100% - 10px); /* Largeur de 100% moins la marge */
+    }
+
+    .card {
+        width: 100; /* Ajustez la largeur des cartes pour qu'elles occupent toute la largeur de l'écran*/
+        margin-bottom: 20px; /* Ajustez de l'espace entre les cartes pour les petits écrans*/
+    }
+
+    h2 {
+        font-size: 24px; /* Réduire la taille de la police des titres pour les petits écrans */
+    }
+
+    .logo {
+        width: 80px; /* Ajustez la taille du logo pour l'écran plus petit*/
+        margin-top: 5px; /* Ajustez légèrement la marge supérieure du logo */
+    }
 }
 

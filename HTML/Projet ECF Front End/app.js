@@ -90,16 +90,17 @@ document.getElementById('randomButton').addEventListener('click', () => {
     getRandomCharacters(url);
 });
 
+// Ajoutez des écouteurs d'évènements pour les auytes boutons et appeler les fonction appropriées
 document.getElementById('aliveButton').addEventListener('click', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
+    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
 });
 
 document.getElementById('deadButton').addEventListener('click', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12'); // Pour le bouton "Random Dead Characters"
+    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12'); // Pour le bouton "Random Dead Characters"
 });
 
 document.getElementById('unknownButton').addEventListener('click', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12'); // Pour le bouton "Random Unknown Characters"
+    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12'); // Pour le bouton "Random Unknown Characters"
 });
 
 

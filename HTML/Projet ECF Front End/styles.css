@@ -108,7 +108,7 @@ nav {
 }
 
 /* Media Queries pour les appareils mobiles*/
-@media (max-width: 320px) {
+@media (max-width: 352px) {
     /* Réorganiser le contenu pour les appareils mobiles */
     .container {
         padding: 0 20px; /* Ajoutez un padding sur les côtés pour les petits écrans*/

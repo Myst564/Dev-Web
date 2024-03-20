@@ -7,7 +7,7 @@
 
 /* Fond et header aux couleurs de Rick and Morty */
 body {
-    background-color: #131415; /* Couleur de fond sombre */
+    background-color: #0f9d58; /* Couleur de fond sombre */
 }
 
 nav {
@@ -33,6 +33,7 @@ h2, h3, .card p {
     left: 50%; /* Centrage horizontal*/
     transform: translate(-50%); /* Centrage Horizontal*/
 }
+
 
 /* Boutons */
 .btn {
@@ -71,9 +72,6 @@ h2, h3, .card p {
 }
 
 /* Ajout d'une touche de vert */
-body {
-    background-color: #131415; /* Fond sombre */
-}
 
 nav {
     background-color: #2d2f30; /* Header */

@@ -15,11 +15,23 @@ nav {
     color: #fff; /* Couleur du texte du header */
 }
 
-/* Police "cartoon" pour les titres */
-h2, h3 {
+/* Police "cartoon" pour les titres et le texte */
+h2, h3, .card p {
     font-family: 'Roboto', sans-serif; /* Utilisation de la police Roboto pour les titres */
     color: #f2f2f2; /* Couleur de texte pour les titres */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Ombre portée pour donner un effet cartoon */
+}
+
+/* Logo de rick and Morty*/
+.logo {
+    width: 150px;
+    height: auto;
+    margin: 10px auto; /* Pour centrer horizontalement*/
+    display: block; /* Pour centrer verticalement*/
+    position: absolute; /* Position absolue pour placer le logo*/
+    top: 10px; /* Espacement par rapport au haut de la page*/
+    left: 50%; /* Centrage horizontal*/
+    transform: translate(-50%); /* Centrage Horizontal*/
 }
 
 /* Boutons */
@@ -31,6 +43,7 @@ h2, h3 {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    font-family: 'Roboto', sans-serif; /* Police "cartoon" pour les boutons*/
 }
 
 .btn:hover {
@@ -45,6 +58,12 @@ h2, h3 {
     transition: transform 0.3s ease;
     background-color: #1f2122; /* Couleur de fond des cartes */
     color: #f2f2f2; /* Couleur du texte des cartes */
+}
+
+/* Ajout de défilement vertical pour les cartes */
+.card {
+    overflow-y: auto; /* Défilement vertical*/
+    max-height: 400px; /*Hauteur maximale de la carte*/
 }
 
 .card:hover {

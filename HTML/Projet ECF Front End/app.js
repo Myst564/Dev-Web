@@ -61,13 +61,16 @@ function showModal(character) {
     });
 }
 
+// Ajoutez un écouteur d'évènement pour le bouton "Random Character" et appeler la fonction approprié 
+document.getElementById('randomButton').addEventListener('click', () => {
+    getRandomCharacters('https://rickandmortyapi.com/api/character/?per_page=12');
+});
+
+
+
 // Fonction pour récupérer et afficher 12 personnages aléatoires
 async function getRandomCharacters(url) {
-    // Ajout du paramètre count=12 à l'URL
-    const urlWithCount = new URL(url);
-    urlWithCount.searchParams.set('count', '12');
-     
-    const characters = await fetchCharacters(urlWithCount.href);
+    const characters = await fetchCharacters(url);
     displayCharacters(characters);
 }
 

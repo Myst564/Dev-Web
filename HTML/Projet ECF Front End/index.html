@@ -11,15 +11,26 @@
         /* Police "cartoon" pour les titres */
         h2, h3 {
             font-family: 'Roboto', sans-serif;
+            color: #f2f2f2; /* Couleur de texte pour les titres */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Ombre portée pour donner un effet cartoon */
+        }
+
+        /* Logo de Rick and Morty */
+        .logo {
+            width: 200px; 
+            height: auto;
+            margin-left: -825px; 
+            margin-top: -32px;  
+            
+            
         }
     </style>
 </head>
 <body>
 
-<nav class="bg-blue-900 text-white p-4">
-    <div class="container mx-auto">
-        <span class="text-2xl font-bold">Rick and Morty Randomizer</span>
-    </div>
+<nav class="bg-blue-900 text-white p-4 flex justify-center items-center">
+    <img src="logo rick and morty.png" alt="Rick and Morty Logo" class="logo">
+    <span class="text-2xl font-bold">Rick and Morty Randomizer</span>
 </nav>
 
 <section class="container mx-auto mt-8">
@@ -51,5 +62,7 @@
 <script src="app.js"></script>
 </body>
 </html>
+
+
 
 

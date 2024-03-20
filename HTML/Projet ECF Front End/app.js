@@ -1,3 +1,4 @@
+// Fonction asynchrone pour récupérer les personnages depuis l'API
 async function fetchCharacters(url) {
     try {
         const response = await fetch(url);
@@ -11,10 +12,12 @@ async function fetchCharacters(url) {
     }
 }
 
+// Fonction pour afficher les personnages dans le conteneur
 function displayCharacters(characters) {
     const container = document.getElementById('charactersContainer');
     container.innerHTML = '';
 
+    // Parcourir chaque personnage et créer une carte pour l'afficher
     characters.forEach(character => {
         const card = document.createElement('div');
         card.classList.add('card');
@@ -32,21 +35,25 @@ function displayCharacters(characters) {
     });
 }
 
+// Fonction pour afficher la modale avec les détails du personnage
 function showModal(character) {
     const modal = document.getElementById('modal');
     modal.classList.remove('hidden');
 
+    // Remplir les éléments de la modale avec les informations du personnage
     document.getElementById('modalTitle').textContent = character.name;
     document.getElementById('modalImage').src = character.image;
     document.getElementById('modalOrigin').textContent = `Origin: ${character.origin.name}`;
     document.getElementById('modalLocation').textContent = `Last Location: ${character.location.name}`;
     document.getElementById('modalEpisodes').innerHTML = `Episodes: <ul>${character.episode.map(episode => `<li>${episode}</li>`).join('')}</ul>`;
 
+    // Ajouter un écouteur d'événement pour fermer la modale en cliquant sur le bouton Close
     const closeModalButton = document.getElementById('closeModal');
     closeModalButton.addEventListener('click', () => {
         modal.classList.add('hidden');
     });
 
+    // Ajouter un écouteur d'événement pour fermer la modale en cliquant en dehors de celle-ci
     modal.addEventListener('click', (event) => {
         if (event.target === modal) {
             modal.classList.add('hidden');
@@ -54,15 +61,18 @@ function showModal(character) {
     });
 }
 
+// Fonction pour récupérer et afficher 12 personnages aléatoires
 async function getRandomCharacters(url) {
     const characters = await fetchCharacters(url);
     displayCharacters(characters);
 }
 
+// Appeler la fonction pour récupérer et afficher 12 personnages au chargement de la page
 window.onload = () => {
     getRandomCharacters('https://rickandmortyapi.com/api/character/?per_page=12');
 };
 
+// Ajouter des écouteurs d'événements pour les boutons et appeler les fonctions appropriées pour récupérer et afficher les personnages
 document.getElementById('randomButton').addEventListener('click', () => {
     getRandomCharacters('https://rickandmortyapi.com/api/character/?per_page=12');
 });
@@ -76,7 +86,9 @@ document.getElementById('deadButton').addEventListener('click', () => {
 });
 
 document.getElementById('unknownButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&^per_page12');
+    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page12');
 });
+
+
 
 

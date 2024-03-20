@@ -1,11 +1,32 @@
+/* Importation des styles de base de Tailwind CSS */
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Styles personnalisés */
+
+/* Fond et header aux couleurs de Rick and Morty */
+body {
+    background-color: #131415; /* Couleur de fond sombre */
+}
+
+nav {
+    background-color: #2d2f30; /* Couleur de fond du header */
+    color: #fff; /* Couleur du texte du header */
+}
+
+/* Police "cartoon" pour les titres */
+h2, h3 {
+    font-family: 'Roboto', sans-serif; /* Utilisation de la police Roboto pour les titres */
+    color: #f2f2f2; /* Couleur de texte pour les titres */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Ombre portée pour donner un effet cartoon */
+}
+
+/* Boutons */
 .btn {
     padding: 8px 16px;
-    background-color: #4b5563;
-    color: #fff;
+    background-color: #5f63ad; /* Couleur de fond des boutons */
+    color: #fff; /* Couleur du texte des boutons */
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -13,14 +34,17 @@
 }
 
 .btn:hover {
-    background-color: #6b7280;
+    background-color: #7687cc; /* Couleur de fond des boutons au survol */
 }
 
+/* Cartes des personnages */
 .card {
     border: 1px solid #d1d5db;
     border-radius: 8px;
     padding: 16px;
     transition: transform 0.3s ease;
+    background-color: #1f2122; /* Couleur de fond des cartes */
+    color: #f2f2f2; /* Couleur du texte des cartes */
 }
 
 .card:hover {

@@ -63,7 +63,11 @@ function showModal(character) {
 
 // Fonction pour récupérer et afficher 12 personnages aléatoires
 async function getRandomCharacters(url) {
-    const characters = await fetchCharacters(url);
+    // Ajout du paramètre count=12 à l'URL
+    const urlWithCount = new URL(url);
+    urlWithCount.searchParams.set('count', '12');
+     
+    const characters = await fetchCharacters(urlWithCount.href);
     displayCharacters(characters);
 }
 
@@ -86,8 +90,10 @@ document.getElementById('deadButton').addEventListener('click', () => {
 });
 
 document.getElementById('unknownButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page12');
+    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12');
 });
+
+
 
 
 

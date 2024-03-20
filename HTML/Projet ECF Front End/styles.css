@@ -50,3 +50,29 @@ h2, h3 {
 .card:hover {
     transform: scale(1.05);
 }
+
+/* Ajout d'une touche de vert */
+body {
+    background-color: #131415; /* Fond sombre */
+}
+
+nav {
+    background-color: #2d2f30; /* Header */
+}
+
+.btn, .card {
+    border-color: #3f8749; /* Bordures des boutons et des cartes */
+}
+
+.btn {
+    background-color: #5f63ad; /* Boutons */
+}
+
+.btn:hover {
+    background-color: #7687cc; /* Boutons au survol */
+}
+
+.card {
+    background-color: #1f2122; /* Cartes */
+}
+

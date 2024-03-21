@@ -9,12 +9,15 @@ async function fetchCharacters(url) {
         return data.results;
     } catch (error) {
         console.error(error);
+        return []; // Retourne un tableau vide en cas d'erreur
     }
 }
 
 // Fonction pour afficher les personnages dans le conteneur
 function displayCharacters(characters) {
     const container = document.getElementById('charactersContainer');
+    if (!container) return; // Vérifie si le conteneur existe
+
     container.innerHTML = '';
 
     // Parcourir chaque personnage et créer une carte pour l'afficher
@@ -38,6 +41,8 @@ function displayCharacters(characters) {
 // Fonction pour afficher la modale avec les détails du personnage
 function showModal(character) {
     const modal = document.getElementById('modal');
+    if (!modal) return; // Vérifie si la modale existe
+
     modal.classList.remove('hidden');
 
     // Remplir les éléments de la modale avec les informations du personnage
@@ -49,9 +54,11 @@ function showModal(character) {
 
     // Ajouter un écouteur d'événement pour fermer la modale en cliquant sur le bouton Close
     const closeModalButton = document.getElementById('closeModal');
-    closeModalButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
 
     // Ajouter un écouteur d'événement pour fermer la modale en cliquant en dehors de celle-ci
     modal.addEventListener('click', (event) => {
@@ -61,24 +68,16 @@ function showModal(character) {
     });
 }
 
-// Fonction pour récupérer et afficher 12 personnages aléatoires
-async function getRandomCharacters(url) {
-    const characters = await fetchCharacters(url);
-    // Sélectionner aléatoirement 12 personnages
-    const randomCharacters = characters.sort(() => Math.random() - 0.5).slice(0, 12);
-    displayCharacters(randomCharacters);
-}
-
-// Fonction pour récupérer et afficher 12 personnages en fonction de l'URL spécifiée
+// Fonction pour récupérer et afficher des personnages en fonction de l'URL spécifiée
 async function getCharacters(url) {
     const characters = await fetchCharacters(url);
     displayCharacters(characters.slice(0, 12)); // Limiter à 12 personnages
 }
 
 // Appeler la fonction pour récupérer et afficher 12 personnages au chargement de la page
-window.onload = () => {
+document.addEventListener('DOMContentLoaded', () => {
     getCharacters('https://rickandmortyapi.com/api/character/?per_page=12'); // Au chargement, afficher des personnages aléatoires
-};
+});
 
 // Ajouter des écouteurs d'événements pour chaque bouton et appeler les fonctions appropriées
 document.getElementById('randomButton').addEventListener('click', () => {
@@ -87,20 +86,20 @@ document.getElementById('randomButton').addEventListener('click', () => {
     const url = `https://rickandmortyapi.com/api/character/?per_page=12&timestamp=${timestamp}`;
 
     // Appeler la fonction pour récupérer et afficher de nouveaux personnages
-    getRandomCharacters(url);
+    getCharacters(url);
 });
 
-// Ajoutez des écouteurs d'évènements pour les auytes boutons et appeler les fonction appropriées
+// Ajoutez des écouteurs d'évènements pour les autres boutons et appeler les fonction appropriées
 document.getElementById('aliveButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
+    getCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
 });
 
 document.getElementById('deadButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12'); // Pour le bouton "Random Dead Characters"
+    getCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12'); // Pour le bouton "Random Dead Characters"
 });
 
 document.getElementById('unknownButton').addEventListener('click', () => {
-    getRandomCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12'); // Pour le bouton "Random Unknown Characters"
+    getCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12'); // Pour le bouton "Random Unknown Characters"
 });
 
 

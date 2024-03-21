@@ -9,7 +9,7 @@ module.exports = {
     // Définir les extensions de fichiers à tester
     moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
     // Définir les dossiers à inclure dans les tests
-    roots: ['<rootDir>/src'],
+    roots: ['<app.test.js>/src'],
     // Indique à Jest d'utiliser babel-jest pour transpiler les fichiers JS/JSX
     transform: {
       '^.+\\.jsx?$': 'babel-jest',

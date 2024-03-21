@@ -9,7 +9,7 @@ module.exports = {
     // Définir les extensions de fichiers à tester
     moduleFileExtensions: ['js', 'jsx'],
     // Définir les dossiers à inclure dans les tests
-    roots: ['<app.test.js>/src'],
+    roots: ['<rootDir>/__tests__'],
     // Utiliser babel-jest pour transpiler les fichiers JS/JSX
     transform: {
       '^.+\\.jsx?$': 'babel-jest',
@@ -20,6 +20,7 @@ module.exports = {
     collectCoverage: true,
     // Définir le dossier de la couverture de code
     coverageDirectory: 'coverage',
-  };
+};
+
 
   

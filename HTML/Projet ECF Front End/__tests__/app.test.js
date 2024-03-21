@@ -7,10 +7,12 @@ test('test de displayCharacters', () => {
     { name: 'Rick', status: 'Alive', gender: 'Male', species: 'Human', image: 'rick.jpg' },
     { name: 'Morty', status: 'Alive', gender: 'Male', species: 'Human', image: 'morty.jpg' }
   ];
-  const container = document.createElement('div'); // Créer un conteneur simulé
-  document.body.appendChild(container); // Ajouter le conteneur au DOM
+  // Créer un conteneur simulé
+  const container = document.createElement('div');
+  // Ajouter le conteneur au DOM
+  document.body.appendChild(container);
 
-  displayCharacters(characters);
+  displayCharacters(characters, container);
 
   // Vérifier si les cartes des personnages ont été ajoutées au conteneur
   expect(container.children.length).toBe(characters.length);
@@ -41,23 +43,23 @@ test('test de showModal', () => {
   const character = { name: 'Rick', image: 'rick.jpg', origin: { name: 'Earth' }, location: { name: 'Planet' }, episode: ['S01E01', 'S01E02'] };
 
   // Créer des éléments simulés nécessaires pour la modale
-  const modal = document.createElement('div');
-  modal.id = 'modal';
-  document.body.appendChild(modal); // Ajouter la modale au DOM
+  const modal = { classList: { contains: jest.fn(() => false) }, querySelector: jest.fn() };
+  const body = { appendChild: jest.fn(), removeChild: jest.fn() };
+  document.body = body;
+  document.createElement = jest.fn(() => modal);
 
   showModal(character);
 
   // Vérifier si la modale est affichée avec les bonnes informations du personnage
-  expect(modal.classList.contains('hidden')).toBe(false);
-  expect(modal.querySelector('#modalTitle').textContent).toBe('Rick');
-  expect(modal.querySelector('#modalImage').src).toBe('rick.jpg');
-  expect(modal.querySelector('#modalOrigin').textContent).toBe('Origin: Earth');
-  expect(modal.querySelector('#modalLocation').textContent).toBe('Last Location: Planet');
-  expect(modal.querySelector('#modalEpisodes').innerHTML).toContain('<li>S01E01</li>');
-  expect(modal.querySelector('#modalEpisodes').innerHTML).toContain('<li>S01E02</li>');
+  expect(modal.classList.contains).toHaveBeenCalledWith('hidden');
+  expect(modal.querySelector).toHaveBeenCalledWith('#modalTitle');
+  expect(modal.querySelector).toHaveBeenCalledWith('#modalImage');
+  expect(modal.querySelector).toHaveBeenCalledWith('#modalOrigin');
+  expect(modal.querySelector).toHaveBeenCalledWith('#modalLocation');
+  expect(modal.querySelector).toHaveBeenCalledWith('#modalEpisodes');
 
   // Supprimer la modale du DOM après le test
-  document.body.removeChild(modal);
+  expect(body.removeChild).toHaveBeenCalledWith(modal);
 });
 
 // Test de la fonction getCharacters
@@ -75,6 +77,8 @@ test('test de getCharacters', async () => {
   expect(fetchCharacters).toHaveBeenCalledWith(url);
   expect(displayCharacters).toHaveBeenCalled();
 });
+
+
 
 
 

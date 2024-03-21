@@ -14,8 +14,7 @@ async function fetchCharacters(url) {
 }
 
 // Fonction pour afficher les personnages dans le conteneur
-function displayCharacters(characters) {
-    const container = document.getElementById('charactersContainer');
+function displayCharacters(characters, container) {
     if (!container) return; // Vérifie si le conteneur existe
 
     container.innerHTML = '';
@@ -39,21 +38,20 @@ function displayCharacters(characters) {
 }
 
 // Fonction pour afficher la modale avec les détails du personnage
-function showModal(character) {
-    const modal = document.getElementById('modal');
+function showModal(character, modal) {
     if (!modal) return; // Vérifie si la modale existe
 
     modal.classList.remove('hidden');
 
     // Remplir les éléments de la modale avec les informations du personnage
-    document.getElementById('modalTitle').textContent = character.name;
-    document.getElementById('modalImage').src = character.image;
-    document.getElementById('modalOrigin').textContent = `Origin: ${character.origin.name}`;
-    document.getElementById('modalLocation').textContent = `Last Location: ${character.location.name}`;
-    document.getElementById('modalEpisodes').innerHTML = `Episodes: <ul>${character.episode.map(episode => `<li>${episode}</li>`).join('')}</ul>`;
+    modal.querySelector('#modalTitle').textContent = character.name;
+    modal.querySelector('#modalImage').src = character.image;
+    modal.querySelector('#modalOrigin').textContent = `Origin: ${character.origin.name}`;
+    modal.querySelector('#modalLocation').textContent = `Last Location: ${character.location.name}`;
+    modal.querySelector('#modalEpisodes').innerHTML = `Episodes: <ul>${character.episode.map(episode => `<li>${episode}</li>`).join('')}</ul>`;
 
     // Ajouter un écouteur d'événement pour fermer la modale en cliquant sur le bouton Close
-    const closeModalButton = document.getElementById('closeModal');
+    const closeModalButton = modal.querySelector('#closeModal');
     if (closeModalButton) {
         closeModalButton.addEventListener('click', () => {
             modal.classList.add('hidden');
@@ -69,14 +67,15 @@ function showModal(character) {
 }
 
 // Fonction pour récupérer et afficher des personnages en fonction de l'URL spécifiée
-async function getCharacters(url) {
+async function getCharacters(url, container) {
     const characters = await fetchCharacters(url);
-    displayCharacters(characters.slice(0, 12)); // Limiter à 12 personnages
+    displayCharacters(characters.slice(0, 12), container); // Limiter à 12 personnages
 }
 
 // Appeler la fonction pour récupérer et afficher 12 personnages au chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?per_page=12'); // Au chargement, afficher des personnages aléatoires
+    const container = document.getElementById('charactersContainer');
+    getCharacters('https://rickandmortyapi.com/api/character/?per_page=12', container); // Au chargement, afficher des personnages aléatoires
 });
 
 // Ajouter des écouteurs d'événements pour chaque bouton et appeler les fonctions appropriées
@@ -85,22 +84,27 @@ document.getElementById('randomButton').addEventListener('click', () => {
     const timestamp = new Date().getTime()
     const url = `https://rickandmortyapi.com/api/character/?per_page=12&timestamp=${timestamp}`;
 
-    // Appeler la fonction pour récupérer et afficher de nouveaux personnages
-    getCharacters(url);
+    // Passer le conteneur comme argument
+    const container = document.getElementById('charactersContainer');
+    getCharacters(url, container);
 });
 
 // Ajoutez des écouteurs d'évènements pour les autres boutons et appeler les fonction appropriées
 document.getElementById('aliveButton').addEventListener('click', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
+    const container = document.getElementById('charactersContainer');
+    getCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12', container); // Pour le bouton "Random Alive Characters"
 });
 
 document.getElementById('deadButton').addEventListener('click', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12'); // Pour le bouton "Random Dead Characters"
+    const container = document.getElementById('charactersContainer');
+    getCharacters('https://rickandmortyapi.com/api/character/?status=dead&per_page=12', container); // Pour le bouton "Random Dead Characters"
 });
 
 document.getElementById('unknownButton').addEventListener('click', () => {
-    getCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12'); // Pour le bouton "Random Unknown Characters"
+    const container = document.getElementById('charactersContainer');
+    getCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12', container); // Pour le bouton "Random Unknown Characters"
 });
+
 
 
 

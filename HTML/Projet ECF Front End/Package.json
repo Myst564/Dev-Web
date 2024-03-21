@@ -1,20 +1,23 @@
 {
-    "name": "projet-ecf-ricketmorty",
+    "name": "projet-ecf-front-end",
     "version": "1.0.0",
-    "description": "Application Web randomizer pour rick et morty",
+    "description": "Description de votre projet",
     "main": "index.js",
     "scripts": {
-      "test": "jest"
+      "test": "jest",
+      "test:watch": "jest --watch",
+      "test:coverage": "jest --coverage"
     },
     "keywords": [
       "projet",
       "ecf",
       "front-end"
     ],
-    "author": "Max Mayer",
+    "author": "Votre Nom",
     "license": "MIT",
     "devDependencies": {
       "jest": "^27.0.6"
     }
   }
+  
   

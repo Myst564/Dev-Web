@@ -1,15 +1,51 @@
-// Fonction asynchrone pour récupérer les personnages depuis l'API
-async function fetchCharacters(url) {
+// Fonction pour afficher la modale avec les détails du personnage
+function showModal(character) {
+    const modal = document.getElementById('modal');
+    if (!modal) return; // Vérifie si la modale existe
+
+    modal.classList.remove('hidden');
+
+    // Remplir les éléments de la modale avec les informations du personnage
+    modal.querySelector('#modalTitle').textContent = character.name;
+    modal.querySelector('#modalImage').src = character.image;
+
+    // Vérifier si les propriétés existent avant de les utiliser
+    const origin = character.origin ? character.origin.name : 'Unknown';
+    modal.querySelector('#modalOrigin').textContent = `Origin: ${origin}`;
+
+    const location = character.location ? character.location.name : 'Unknown';
+    modal.querySelector('#modalLocation').textContent = `Last Location: ${location}`;
+
+    const episodes = character.episode ? character.episode.map(episode => `<li>${episode}</li>`).join('') : 'Unknown';
+    modal.querySelector('#modalEpisodes').innerHTML = `Episodes: <ul>${episodes}</ul>`;
+
+    // Ajouter un écouteur d'événement pour fermer la modale en cliquant sur le bouton Close
+    const closeModalButton = modal.querySelector('#closeModal');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    }
+
+    // Ajouter un écouteur d'événement pour fermer la modale en cliquant en dehors de celle-ci
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+}
+
+// Fonction pour récupérer et afficher des personnages en fonction de l'URL spécifiée
+async function getCharacters(url, container) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
             throw new Error('Failed to fetch characters');
         }
         const data = await response.json();
-        return data.results;
+        displayCharacters(data.results.slice(0, 12), container); // Limiter à 12 personnages
     } catch (error) {
         console.error(error);
-        return []; // Retourne un tableau vide en cas d'erreur
     }
 }
 
@@ -35,41 +71,6 @@ function displayCharacters(characters, container) {
         });
         container.appendChild(card);
     });
-}
-
-// Fonction pour afficher la modale avec les détails du personnage
-function showModal(character, modal) {
-    if (!modal) return; // Vérifie si la modale existe
-
-    modal.classList.remove('hidden');
-
-    // Remplir les éléments de la modale avec les informations du personnage
-    modal.querySelector('#modalTitle').textContent = character.name;
-    modal.querySelector('#modalImage').src = character.image;
-    modal.querySelector('#modalOrigin').textContent = `Origin: ${character.origin.name}`;
-    modal.querySelector('#modalLocation').textContent = `Last Location: ${character.location.name}`;
-    modal.querySelector('#modalEpisodes').innerHTML = `Episodes: <ul>${character.episode.map(episode => `<li>${episode}</li>`).join('')}</ul>`;
-
-    // Ajouter un écouteur d'événement pour fermer la modale en cliquant sur le bouton Close
-    const closeModalButton = modal.querySelector('#closeModal');
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', () => {
-            modal.classList.add('hidden');
-        });
-    }
-
-    // Ajouter un écouteur d'événement pour fermer la modale en cliquant en dehors de celle-ci
-    modal.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.add('hidden');
-        }
-    });
-}
-
-// Fonction pour récupérer et afficher des personnages en fonction de l'URL spécifiée
-async function getCharacters(url, container) {
-    const characters = await fetchCharacters(url);
-    displayCharacters(characters.slice(0, 12), container); // Limiter à 12 personnages
 }
 
 // Appeler la fonction pour récupérer et afficher 12 personnages au chargement de la page
@@ -104,6 +105,7 @@ document.getElementById('unknownButton').addEventListener('click', () => {
     const container = document.getElementById('charactersContainer');
     getCharacters('https://rickandmortyapi.com/api/character/?status=unknown&per_page=12', container); // Pour le bouton "Random Unknown Characters"
 });
+
 
 
 

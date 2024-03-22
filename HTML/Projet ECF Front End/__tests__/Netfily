@@ -1,0 +1,26 @@
+# Configuration de base pour Netlify
+
+# Répertoire de base pour le déploiement
+[build]
+  base = "public"
+  command = "npm run build" # Commande pour construire votre projet (adaptée à votre projet)
+
+# Paramètres du déploiement
+[build.environment]
+  NODE_VERSION = "14"
+
+# Redirections
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Redirections 404
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
+
+# Notifications sur Slack en cas de déploiement
+# [notifications]
+#   slack = "your-slack-webhook-url"

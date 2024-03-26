@@ -90,7 +90,7 @@ document.getElementById('randomButton').addEventListener('click', () => {
     getRandomCharacters(url);
 });
 
-// Ajoutez des écouteurs d'évènements pour les auytes boutons et appeler les fonction appropriées
+// Ajoutez des écouteurs d'évènements pour les autres boutons et appeler les fonction appropriées
 document.getElementById('aliveButton').addEventListener('click', () => {
     getRandomCharacters('https://rickandmortyapi.com/api/character/?status=alive&per_page=12'); // Pour le bouton "Random Alive Characters"
 });

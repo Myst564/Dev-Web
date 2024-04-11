@@ -6,7 +6,7 @@ CREATE TABLE Auteurs (
     nom VARCHAR(50),
     nationalite VARCHAR(50)
 );
-
+--@block
 -- Création de la table des livres 
 CREATE TABLE Livres (
     id INT PRIMARY KEY,

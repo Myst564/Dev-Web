@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ voyage.destination }}</title>
+    <style>
+        /* Styles pour la page de destination */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.description {
+    margin-bottom: 20px;
+}
+    </style>
+</head>
+<body>
+    <h1>voyage.destination</h1>
+    <img src="{{ voyage.image_url }}" alt="voyage.destination">
+    <p>Prix : {{ voyage.prix }} €</p>
+    <p>{{ voyage.description }}</p>
+</body>
+</html>

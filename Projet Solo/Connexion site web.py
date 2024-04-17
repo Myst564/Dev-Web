@@ -22,7 +22,7 @@ def login():
             return redirect(url_for('accueil'))
         else:
             return "Invalid username or password. Please try again"
-        return render_template('Projet Solo Voyage.html')
+        return render_template('accueil.html')
     
 # Route pour la page d'accueil 
 @app.route('/accueil')

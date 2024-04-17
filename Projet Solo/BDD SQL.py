@@ -67,7 +67,7 @@ def envoyer_message():
     db.session.commit()
     return redirect(url_for('accueil'))
 
-@app.route('/destination/<int:id>')
+@app.route('/destination/<int:destination_id>')
 def destination(id):
     voyage = Voyage.query.get(id)
     return render_template('destination.html', voyage=voyage)

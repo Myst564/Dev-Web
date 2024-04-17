@@ -121,21 +121,21 @@
         <h2>Liste des voyages disponibles :</h2>
         <ul>
             <li>
-                <a href="/destination/1">
+                <a href="{{ url_for('destination', destination_id=1) }}">
                     <img src="paysage1.jpg" alt="Paysage 1" class="voyage-image">
                 </a>
             </li>
             <li>
-                <a href="/destination/2">
+                <a href="{{  url_for('destination', destination_id=2) }}">
                     <img src="paysage2.jpg" alt="Paysage 2" class="voyage-image">
                 </a>
             </li>
             <li>
-                <a href="/destination/3">
+                <a href="{{ url_for('destination', destination_id=3) }}">
                     <img src="paysage3.jpg" alt="Paysage 3" class="voyage-image"> 
             </li>
             <li>
-                <a href="/destination/4">
+                <a href="{{ url_for('destination', destination_id=4) }}">
                     <img src="paysage4.jpg" alt="Paysage 4" class="voyage-image">
             </li>
         </ul>

@@ -5,7 +5,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db' # Chemin vers la base de donnée 
 db = SQLAlchemy(app)
 
-# Modèle de la base de données pour les utlisateurs
+# Modèle de la base de données pour les utilisateurs
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)

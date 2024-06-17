@@ -1,0 +1,29 @@
+#Créer : Vue FOrmulaire permettant a l'utilisateur de rentrer les informations nécessaires
+
+<form action="/create_user" method="post">
+    <input type="text" name="username">
+    <input type="submit" value="Créer">
+</form>
+
+#Read : Vue Affiche les données utilisateurs
+
+<div>
+    <p>Nom d'utilisateur: {{ user.username }}</p>
+</div>
+
+#Update: Vue Formulaire permettant a l'utilisateur de modifier les informations 
+
+<form action="/update_user" method="post">
+    <input type="text" name="username" value="{{ user.username }}">
+    <input type="submit" value="Mettre à jour">
+</form>
+
+#Delete: Vue, Peut être un boutton ou lien pour supprimer 
+
+<form action="/delete_user" method="post">
+    <input type="hidden" name="user_id" value="{{ user.id }}">
+    <input type="submit" value="Supprimer">
+</form>
+
+
+

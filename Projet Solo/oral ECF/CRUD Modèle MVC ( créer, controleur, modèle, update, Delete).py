@@ -6,7 +6,7 @@ class UserModel:
     def create_user(self, user_data):
         # Code pour insérer user_data dans la base de données
         
-#Contrôleur: Récupère les données du formulaire et appelle le modèle pour créer l'utilisateur
+#Contrôleur: Récupèrer les données du formulaire et appelle le modèle pour créer l'utilisateur
         
 class UserController:
     def create_user(self, request):

@@ -12,7 +12,7 @@ class Person:
 person1 = Person("Alice", 30)
 print(person1.greet())  # Output: Hello, my name is Alice
 
-#Encupsulation : Concept de cacher des détails internet et afficher ceux nécessaire au bon fonctionnement des méthodes et attributs privés
+#Encapsulation : Concept de cacher des détails interne et afficher ceux nécessaire au bon fonctionnement des méthodes et attributs privés
 
 class Person:
     def __init__(self, name, age):
@@ -36,7 +36,7 @@ class Employee(Person):
         return f"Employee {self.employee_id} is working"
     
     
-#Polymorpisme:Objets de différentes classes traités comme instances d'une même classe parente, grâce aux méthodes communes
+#Polymorphisme: Objets de différentes classes traités comme instances d'une même classe parente, grâce aux méthodes communes
 
 class Dog:
     def speak(self):

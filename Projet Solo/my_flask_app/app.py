@@ -34,7 +34,7 @@ def get_users():
     return jsonify(users_list), 200
 
 # Route pour lire un utilisateur par ID (Read)
-@app.route('/users/<int:id>', methods=['GET'])
+@app.route('/users/<int:id>', methods=['GET' ])
 def get_user(id):  # Correction de la fonction get_user
     user = User.query.get_or_404(id)
     user_data = {'id': user.id, 'username': user.username, 'email': user.email}
@@ -45,7 +45,7 @@ def get_user(id):  # Correction de la fonction get_user
 def update_user(id):
     data = request.get_json()
     user = User.query.get_or_404(id)
-    user.username = data.get('username', user.username)
+    user.username = data.get('username', user.username)   
     user.email = data.get('email', user.email)
     db.session.commit()
     return jsonify({'message': 'User updated!'}), 200

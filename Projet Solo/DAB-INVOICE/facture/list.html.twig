@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom du document</th>
+                <th>Date de création</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for facture in factures %}
+                <tr>
+                    <td>{{ facture.id }}</td>
+                    <td>{{ facture.documentName }}</td>
+                    <td>{{ facture.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ facture.paid ? 'Payée' : 'En attente de paiement' }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

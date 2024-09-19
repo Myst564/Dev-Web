@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    {{ form_start(form) }}
+    
+    {# Génère les champs du formulaire manuellement sans bouton de soumission #}
+    {{ form_widget(form, {'attr': { 'class': 'custom-form-class'}, 'submit': false }) }}
+
+    {# Gardez seulement ce bouton #}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+    {# Désactive le rendu automatique des champs restants et du bouton #}
+    {{ form_end(form, { 'render_rest': false}) }}
+
+{% endblock %}

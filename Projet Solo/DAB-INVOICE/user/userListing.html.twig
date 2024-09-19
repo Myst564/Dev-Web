@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{title}}{% endblock %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('userListing') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('userListing') }}
+{% endblock %}
+
+{% block body %}
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        Liste des utilisateurs
+                        {% if archived is defined and archived %}
+                            archivés
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="container-fluid">
+                    <table
+                        class="table table-flush datatables-custom"
+                        data-title="liste_des_utilisateurs{% if archived is defined and archived %}_archives{% endif %}"
+                    >
+                        <thead class="thead-light">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Email</th>
+                            <th>Rôle</th>
+                            <th>Date d'inscription</th>
+                            <th data-visible="false">Créé par</th>
+                            <th data-visible="false">Modifié le</th>
+                            <th data-visible="false">Modifié par</th>
+                            {% if archived is defined and archived %}<th data-visible="false">Archivé le</th>{% endif %}
+                            <th data-not-export="true" data-searchable="false" data-orderable="false">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr data-row-id="{{ user.id }}" data-row-token="{{ csrf_token('user'~ user.id) }}">
+                                <td class="text-sm font-weight-normal" data-type="lastname">{{ user.lastname }}</td>
+                                <td class="text-sm font-weight-normal" data-type="firstname">{{ user.firstname }}</td>
+                                <td class="text-sm font-weight-normal" data-type="email">{{ user.email }}</td>
+                                <td class="text-sm font-weight-normal">{{ user.getMainRoleLabel }}</td>
+                                <td class="text-sm font-weight-normal" data-sort="{{ user.createdAt|date('U') }}">{{ user.createdAt|date("d/m/Y", "Europe/Paris") }}</td>
+                                <td>{{ user.createdBy }}</td>
+                                <td>{{ user.updatedAt|date("d/m/Y", "Europe/Paris") }}</td>
+                                <td>{{ user.updatedBy }}</td>
+                                {% if archived is defined and archived %}<td>{{ user.archivedAt|date("d/m/Y", "Europe/Paris") }}</td>{% endif %}
+                                <td class="d-flex align-items-center">
+                                    {% if archived is not defined or archived is same as false %}
+                                        <a href="{{ path('admin_user_edit', {id: user.id}) }}" class="btn btn-secondary btn-xs mx-1 my-1" title="Modifier les infos de l'utilisateur" data-bs-toggle="tooltip">Modifier</a>
+                                    {%  endif %}
+                                    {% if app.request.get('_route') == 'admin_user_list' %}
+                                        <button class="btn btn-danger btn-xs mx-1 my-1 deleteUserBtn" data-id="{{user.id}}" title="Désactiver l'utilisateur" data-bs-toggle="tooltip" data-bs-placement="top">Supprimer</button>
+                                    {% elseif app.request.get('_route') == 'admin_user_archive_list'  %}
+                                        <button class="btn btn-success btn-xs mx-1 my-1 activateUserBtn" data-id="{{user.id}}" title="Activer l'utilisateur" data-bs-toggle="tooltip" data-bs-placement="top">Activer</button>
+                                    {% endif %}
+                                    {% if is_granted('ROLE_ALLOWED_TO_SWITCH') and user.email != app.user.email and user.emailVerified is same as true and user.activated is same as true and user.passwordChanged is same as true %}
+                                        <a href="{{ path('home', {_switch_user: user.email}) }}" class="btn btn-danger btn-xs mx-1 my-1">
+                                            Infiltrer
+                                        </a>
+                                    {% endif %}
+                                    {% if archived is not defined or archived is same as false %}
+                                        <button class="btn btn-success btn-xs mx-1 my-1 accessEmail" data-user-id="{{ user.id }}" title="Envoyer un mail d'accès" data-bs-toggle="tooltip" data-bs-placement="top">
+                                            <i class="fa fa-envelope"></i>
+                                        </button>
+                                    {% endif %}
+                                    <a
+                                        href="{{ path('user_card', {id: user.id}) }}"
+                                        data-action="user_card"
+                                        class="btn btn-icon btn-primary btn-xs mx-1 my-1"
+                                        title="Voir la fiche de l'utilisateur"
+                                        data-bs-toggle="tooltip"
+                                    >
+                                        <span class="btn-inner--icon"><i class="fas fa-search"></i></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

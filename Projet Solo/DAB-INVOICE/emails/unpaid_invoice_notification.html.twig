@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Notification de facture non acquittée</title>
+</head>
+<body>
+    <h1>Notification de facture non acquittée</h1>
+    <p>
+        La facture <strong>#{{ facture.id }}</strong> d'un montant de <strong>{{ facture.montant }}€</strong> pour le client <strong>{{ facture.client.nom }}</strong>
+        n'a pas été acquittée et la date limite de paiement est dépassée.
+    </p>
+</body>
+</html>

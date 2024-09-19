@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    <ul>
+        {% for devis in devis %}
+            <li>{{ devis.nom }} - {{ devis.montant }} €</li>
+        {% else %}
+            <li>Aucun devis trouvé.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

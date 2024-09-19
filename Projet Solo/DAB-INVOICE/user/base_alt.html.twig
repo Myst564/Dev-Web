@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", initial-scale="1.0">
+    <title>{% block title %}Dafault Title{% endblock %}</title>
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    {% block styleshhets %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <!--Navigation items-->
+            <ul>
+                <li><a href="{{ path('homepage') }}">Home</a></li>
+                <li><a href="{{ path('dashboard_alt') }}">Dashboard</a></li>
+                <li><a href="{{ path('client_list_alt') }}">Clients</a></li>
+                <li><a href="{{ path('settings_alt') }}">Settings</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 IDEES Numérique</p>
+    </footer>
+
+    {% block javascripts%}{% endblock%}
+</body>
+</html>

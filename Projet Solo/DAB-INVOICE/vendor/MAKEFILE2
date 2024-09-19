@@ -1,0 +1,119 @@
+#!make
+.DEFAULT_GOAL := help
+.PHONY: help
+SHELL := /bin/bash
+
+include .env
+
+.PHONY: help
+help:
+	@echo "\033[33mUsage:\033[0m\n  make [target] [arg=\"val\"...]\n\n\033[33mTargets:\033[0m"
+	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' Makefile| sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[32m%-15s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: install
+install: ## Fresh install of all containers
+	make install-app
+
+.PHONY: install-app
+install-app: init-deps db-create up
+
+.PHONY: init-deps
+init-deps: init-deps-docker init-deps-back init-deps-front ## Init infra, back & front dependencies
+
+.PHONY: init-deps-docker
+init-deps-docker:
+	docker login registry.affineurs.pro
+	docker pull registry.affineurs.pro/affineurs/php:${PHP_VERSION}-apache-dev
+	docker pull registry.affineurs.pro/affineurs/node:${NODE_VERSION}-dev
+	docker compose up -d --remove-orphans
+
+.PHONY: init-deps-back
+init-deps-back:
+	docker compose up -d
+	docker compose exec -T app bash -c "composer install"
+	sed -i "s/'_'/'_', '\/' => '-'/g" app/vendor/symfony/panther/src/ServerExtension.php # @todo remove when panther will be updated
+
+.PHONY: init-deps-front
+init-deps-front:
+	docker compose run --rm watch bash -c "yarn; yarn install"
+
+.PHONY: up
+up: init-deps db-migration start watch ## Start app and verify dependencies & db
+
+start:
+	docker compose up -d --remove-orphans
+
+.PHONY: watch
+watch: watch
+
+watch:
+	docker compose up -d --force-recreate watch
+	while [[ -z "$$(docker compose logs watch | grep -E '(webpack compiled|Failed to compile|Command failed with exit code)')" ]]; do \
+		echo -ne "."; \
+		sleep 1; \
+	done \
+	###### Waiting Watch service to be ready... ######
+	docker compose logs --tail=200 watch | ccze -m ansi
+
+.PHONY: down
+down: db-save db-drop ## Shutdown app
+	docker compose run --rm -uroot app rm -rf /srv/app/vendor/ /srv/app/assets/admin/node_modules || true
+	docker compose down -v --remove-orphans
+
+.PHONY: reset-all
+reset-all: db-drop down install ## Reset app
+
+.PHONY: db-create
+db-create: ## Create database
+	docker compose run --rm app bash -c "php /srv/app/bin/console doctrine:database:create --if-not-exists"
+
+.PHONY: db-drop
+db-drop: ## Remove database
+	docker compose run --rm app bash -c "php /srv/app/bin/console doctrine:database:drop --if-exists --force"
+#	rm app/var/app.db || true
+
+.PHONY: db-save
+db-save: ## Save DB data & structure
+	docker exec -it mariadb_picasso mysqldump -uroot -proot ${DATABASE_NAME} | gzip > db-${DATABASE_NAME}.sql.gz
+
+.PHONY: db-restore
+db-restore: ## Restore DB data & structure
+	gunzip -c db-${DATABASE_NAME}.sql.gz | docker exec -i mariadb_picasso mysql -uroot -proot ${DATABASE_NAME}
+
+.PHONY: db-reset
+db-reset: db-drop db-create db-migration ## Reset DB
+
+.PHONY: db-migration
+db-migration: db-migration-test # db-migration-test ## Load doctrine data fixtures
+	docker compose exec -T app php bin/console doctrine:migrations:migrate -n | ccze -m ansi
+	#docker compose exec -T app php bin/console doctrine:fixtures:load -n --append | ccze -m ansi
+
+db-migration-test:
+	docker-compose exec -T test php bin/console doctrine:schema:update --force --complete | ccze -m ansi
+	docker-compose exec -T test php bin/console doctrine:migrations:migrate -n | ccze -m ansi
+	docker-compose exec -T test php bin/console doctrine:fixtures:load -n --append | ccze -m ansi
+
+.PHONY: logs
+logs: ## Show containers logs
+	docker compose logs -f --tail=0 app test | ccze -m ansi
+
+.PHONY: logs
+logs-watch: ## Show containers logs
+	docker compose logs -f --tail=0 watch test | ccze -m ansi
+
+.PHONY: stop
+stop: ## Stop app
+	docker compose stop
+
+cache-clear:
+	docker compose exec app /srv/app/bin/console cache:clear
+	docker compose exec admin-api /srv/app/bin/console cache:clear
+
+entity:
+	docker compose exec app /srv/app/bin/console make:entity
+
+migration:
+	docker compose exec -T app php bin/console make:migration
+
+form:
+	docker compose exec -T app php bin/console make:form

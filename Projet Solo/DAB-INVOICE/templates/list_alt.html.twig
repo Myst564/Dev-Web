@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.id }}</td>
+                    <td>{{ client.name }}</td>
+                    <td>{{ client.address }}</td>
+                    <td>
+                        <a href="{{ path('admin_client_edit', { 'id': client.id }) }}">Éditer</a>
+                        <a href="{{ path('admin_client_archive', { 'id': client.id }) }}">Archiver</a>
+                    </td>
+                </tr>
+            {% else %}
+               <tr>
+                  <td colspan="4">Aucun client trouvé</td>
+               </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,57 @@
+<nav class="navbar navbar-main navbar-expand-lg  px-0 mx-4 shadow-none border-radius-xl z-index-sticky " id="navbarBlur" data-scroll="false">
+    <div class="container-fluid py-1 px-3">
+        <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
+            <a href="javascript:;" class="nav-link p-0">
+                <div class="sidenav-toggler-inner">
+                    <i class="sidenav-toggler-line bg-white"></i>
+                    <i class="sidenav-toggler-line bg-white"></i>
+                    <i class="sidenav-toggler-line bg-white"></i>
+                </div>
+            </a>
+        </div>
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+                <div id="user_navbar_fullname" class="text-white">
+                    {{ app.user.fullname }}
+                </div>
+            </div>
+            <ul class="navbar-nav justify-content-end">
+                <li class="nav-item dropdown">
+                    <a href="javascript:;" class="rounded-circle btn btn-icon p-0 mb-0" style="width: 50px; height:50px;" id="dropdownAccountButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img id="userAvatar" class="rounded-circle" src="{{ asset('build/img/user-default-icon.jpg') }}" alt="avatar de l'utilisateur" style="width: 100%; height:100%; object-fit:cover;">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end px-2 pt-3 me-sm-n4 dropdown-menu-end top-3" aria-labelledby="dropdownAccountButton">
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="{{ path('form_profile') }}">
+                                Profil
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="dropdown-item border-radius-md" href="{{ path('logout') }}">
+                                Déconnexion
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            {% if is_granted('IS_IMPERSONATOR') %}
+                                <a class="dropdown-item border-radius-md"
+                                   href="{{ impersonation_exit_path(path('admin_user_list') ) }}">
+                                    Sortir de l'infiltration
+                                </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-white p-0" id="iconNavbarSidenav">
+                      <div class="sidenav-toggler-inner">
+                        <i class="sidenav-toggler-line bg-white"></i>
+                        <i class="sidenav-toggler-line bg-white"></i>
+                        <i class="sidenav-toggler-line bg-white"></i>
+                      </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+

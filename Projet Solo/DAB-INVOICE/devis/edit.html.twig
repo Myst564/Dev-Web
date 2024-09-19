@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% body title %}Modifier le Devis{% endblock %}
+
+{% body block %}
+    <h1>Modifier le devis</h1>
+
+    {{ form_start(form) }}
+          {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('userDashboard') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('userDashboard') }}
+{% endblock %}
+
+{% block body %}
+<!-- dispositifs -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header">
+                    <h5 class="mb-0">Tableau de bord</h5>
+                </div>
+                <div class="container-fluid" >
+                    <div class="row border-top border-primary py-5">
+                        <h6 class="mb-0">Rechercher</h6>
+                        <div class="col-md-5 mt-4">
+                            <input
+                                id="beneficiaireAutocomplete"
+                                type="text"
+                                placeholder="Entrez votre recherche"
+                                class="form-control autocomplete"
+                                autocomplete="off"
+                            />
+                        </div>
+                    </div>
+                    <div class="row border-top border-primary py-5">
+                        Dashboard
+                    </div>
+                    <div class="row border-top border-primary py-5">
+                        <h6 class="mb-0">Notifications</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

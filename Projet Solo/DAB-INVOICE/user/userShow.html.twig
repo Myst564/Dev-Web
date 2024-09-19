@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fiche utilisateur{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-lg-8 mx-auto">
+            <div class="card mb-6">
+                <div class="card-body">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h4 class="font-weight-bolder my-4">Fiche utilisateur</h4>
+                        <a  href="{{ path('admin_user_list') }}"
+                            id="go-back-to-previous-page"
+                            class=" my-auto btn btn-white text-secondary"
+                        >
+                            Retour
+                        </a>
+                    </div>
+
+                    <!-- utilisateur -->
+                    <div class="border-top border-primary">
+                        <div class="d-flex flex-row justify-content-start align-items-center mt-5 mb-6">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="avatar mx-4">
+                                    <img class="border-radius-lg" alt="Avatar de l'utilisateur"
+                                         src="{{ user.avatarName ? asset("/user/avatar/#{user.avatarName}") : asset('build/img/user-default-icon.jpg') }}"
+                                    >
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column justify-content-between align-items-start">
+                                <span class="m-0 h5">{{ user.getFullName }}</span>
+                                <span class="m-0 text-md">{{ user.getMainRoleLabel }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

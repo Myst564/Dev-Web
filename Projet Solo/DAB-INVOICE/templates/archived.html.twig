@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Clients Archivés{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    {% if clients is not empty %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                    <th>Date d'Archivage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                    <tr>
+                        <td>{{ client.id }}</td>
+                        <td>{{ client.name }}</td>
+                        <td>{{ client.address }}</td>
+                        <td>{{ client.archivedAt|date('Y-m-d H:i') }}</td>
+                        <td>
+                            <a href="{{ path('admin_client_restore', {'id': client.id}) }}" class="btn btn-success btn-sm" onclick="return confirm('Êtes-vous sûr de restaurer ce client ?');">
+                                Restaurer
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun client archivé trouvé.</p>
+    {% endif %}
+{% endblock %}

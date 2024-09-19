@@ -1,0 +1,105 @@
+version: '3.8'
+
+networks:
+  traefik_bridge:
+    external: true
+  mariadb_bridge:
+    external: true
+  mailhog_bridge:
+    external: true
+
+services:
+  app:
+    image: registry.affineurs.pro/affineurs/php:${PHP_VERSION}-apache-dev
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - './app/:/srv/app/'
+      - '${HOME}/.composer/:/home/symfony/.composer/'
+      - '${HOME}/.cache/composer/:/home/symfony/.composer/cache/'
+      - '${HOME}/.cache/yarn/:/home/symfony/.cache/yarn/'
+    networks:
+      traefik_bridge:
+        aliases:
+          - ${DOMAIN}
+      mariadb_bridge:
+      mailhog_bridge:
+        aliases:
+          - 'mailhog.localhost.pro'
+    labels:
+      traefik.enable: 'true'
+      traefik.docker.network: traefik_bridge
+      traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin-web.entrypoints: web
+      traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin-web.rule: Host(`${DOMAIN}`)
+    depends_on:
+      - db
+
+  watch:
+    image: registry.affineurs.pro/affineurs/node:${NODE_VERSION}-dev
+    restart: unless-stopped
+    command: /bin/sh -c "yarn install && yarn build && yarn run watch"
+    env_file: .env
+    volumes:
+      - './app/:/srv/app/'
+      - '${HOME}/.cache/yarn/:/home/symfony/.cache/yarn'
+    ports:
+      - '${WEBPACK_SERVER_PORT}:${WEBPACK_SERVER_PORT}'
+    networks:
+      - mariadb_bridge
+
+  test:
+    image: registry.affineurs.pro/affineurs/php:8.3-apache-test
+    restart: unless-stopped
+    env_file: .env
+    command: "bash -c 'apache2 -D FOREGROUND& /srv/mailhog'"
+    environment:
+      - APP_ENV=test
+      - MAILER_DSN=smtp://0.0.0.0:1025
+      - MAIL_CONTACT_FROM=contact@dab-invoice.localhost
+      - MAIL_CONTACT_TO=hello@dab-invoice.localhost
+      - DATABASE_URL=sqlite:////srv/app/var/app.db
+    volumes:
+      - './admin-web:/srv/app'
+    networks:
+      - mariadb_bridge
+      - mailhog_bridge
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: symfony
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - mariadb_bridge
+
+  php:
+    image: php:8.3-fpm  # Remplacer avec une image publique si nécessaire
+    volumes:
+      - './app:/var/www/symfony'
+    networks:
+      - traefik_bridge
+    depends_on:
+      - db
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    volumes:
+      - /home/maxmayer/Documents/Projet:/ect/nginx/conf.d/default.conf:ro
+      - ./app/public:/var/www/symfony/public
+    networks:
+      - traefik_bridge
+    depends_on:
+      - php
+
+volumes:
+  db_data:
